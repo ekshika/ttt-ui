@@ -14,6 +14,7 @@ import ChatbotsPage from './pages/ChatbotsPage';
 import AgenticWorkflowsPage from './pages/AgenticWorkflowsPage';
 import ProcessAutomationPage from './pages/ProcessAutomationPage';
 import AiAppsPage from './pages/AiAppsPage';
+import AuthPage from './pages/AuthPage';
 
 // ScrollToTop component to handle scrolling to top on route change
 const ScrollToTop = () => {
@@ -35,6 +36,7 @@ function App() {
         
         <Routes>
           <Route path="/" element={<HomePage />} />
+          <Route path="/login" element={<AuthPage />} />
           <Route path="/services/ai-chatbots" element={<ChatbotsPage />} />
           <Route path="/services/agentic-ai-workflows" element={<AgenticWorkflowsPage />} />
           <Route path="/services/smart-process-automation" element={<ProcessAutomationPage />} />

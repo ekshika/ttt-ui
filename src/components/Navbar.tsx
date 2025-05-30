@@ -1,33 +1,37 @@
 import { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Container from './ui/Container';
+import { useAuth } from '../contexts/AuthContext';
+import toast from 'react-hot-toast';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
   const isHomePage = location.pathname === '/';
+  const { user, logout } = useAuth();
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
-  
+
+  const handleLogout = () => {
+    logout();
+    toast.success("Log out successfull!")
+    navigate('/login');
+  };
+
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 10);
-    };
-    
+    const handleScroll = () => setIsScrolled(window.scrollY > 10);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth >= 768) {
-        setIsMenuOpen(false);
-      }
+      if (window.innerWidth >= 768) setIsMenuOpen(false);
     };
-
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
@@ -43,7 +47,7 @@ const Navbar = () => {
   ];
 
   return (
-    <header 
+    <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled ? 'bg-white shadow-md py-2' : 'bg-transparent py-4'
       }`}
@@ -63,15 +67,15 @@ const Navbar = () => {
               {navLinks.map((link) => (
                 <li key={link.name}>
                   {link.href.startsWith('#') || link.href.includes('/#') ? (
-                    <a 
-                      href={link.href} 
+                    <a
+                      href={link.href}
                       className="nav-link px-2 py-2 text-sm lg:text-base whitespace-nowrap"
                     >
                       {link.name}
                     </a>
                   ) : (
-                    <Link 
-                      to={link.href} 
+                    <Link
+                      to={link.href}
                       className="nav-link px-2 py-2 text-sm lg:text-base whitespace-nowrap"
                     >
                       {link.name}
@@ -80,8 +84,28 @@ const Navbar = () => {
                 </li>
               ))}
             </ul>
-            <a 
-              href="#contact" 
+
+            {user ? (
+              <>
+                <span className="text-gray-600 text-sm">Hi, {user.sub}</span>
+                <button
+                  onClick={handleLogout}
+                  className="text-sm text-red-600 hover:underline ml-2"
+                >
+                  Logout
+                </button>
+              </>
+            ) : (
+              <Link
+                to="/login"
+                className="text-sm lg:text-base whitespace-nowrap min-w-[120px] text-center text-primary hover:underline"
+              >
+                Login
+              </Link>
+            )}
+
+            <a
+              href="#contact"
               className="btn btn-primary text-sm lg:text-base whitespace-nowrap min-w-[120px] text-center"
             >
               Get Started
@@ -89,7 +113,7 @@ const Navbar = () => {
           </div>
 
           {/* Mobile Menu Button */}
-          <button 
+          <button
             className="md:hidden z-50 p-2 hover:bg-gray-100 rounded-lg transition-colors"
             onClick={toggleMenu}
             aria-label="Toggle Menu"
@@ -101,7 +125,7 @@ const Navbar = () => {
         {/* Mobile Navigation */}
         <AnimatePresence>
           {isMenuOpen && (
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
@@ -119,8 +143,32 @@ const Navbar = () => {
                     {link.name}
                   </a>
                 ))}
-                <a 
-                  href="#contact" 
+
+                {user ? (
+                  <>
+                    <span className="text-gray-600">Hi, {user.sub}</span>
+                    <button
+                      onClick={() => {
+                        handleLogout();
+                        setIsMenuOpen(false);
+                      }}
+                      className="text-red-600 text-lg hover:underline"
+                    >
+                      Logout
+                    </button>
+                  </>
+                ) : (
+                  <Link
+                    to="/login"
+                    className="text-blue-600 text-lg hover:underline"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    Login
+                  </Link>
+                )}
+
+                <a
+                  href="#contact"
                   className="btn btn-primary mt-4 w-full max-w-[200px] text-center"
                   onClick={() => setIsMenuOpen(false)}
                 >
