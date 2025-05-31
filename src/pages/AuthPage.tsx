@@ -1,17 +1,12 @@
 import React, { useState } from "react";
-import axios from "axios";
 import { toast } from "react-hot-toast";
 import { Eye, EyeOff, Lock, Mail, User } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../contexts/AuthContext";
+import { useAuth } from "../context/AuthContext";
 import { GoogleLogin } from "@react-oauth/google";
 import { CredentialResponse } from "@react-oauth/google";
-
-// Axios instance with correct baseURL
-const api = axios.create({
-  baseURL: "http://localhost:6969/api",
-  withCredentials: true,
-});
+import api from "../api/axios";
+import { loginUser, registerUser, forgotPassword, googleLogin } from "../services/authService";
 
 const AuthPage: React.FC = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -38,16 +33,11 @@ const AuthPage: React.FC = () => {
 
     try {
       if (isForgot) {
-        const res = await api.post("/users/forgot-password", {
-          username: form.username,
-        });
+        const res = await forgotPassword(form.username);
         toast.success(res.data.message || "Reset link sent!");
         setIsForgot(false);
       } else if (isLogin) {
-        const res = await api.post("/auth/login", {
-          username: form.username,
-          password: form.password,
-        });
+        const res = await loginUser(form.username, form.password);
         login(res.data.accessToken);
         toast.success("Login successful");
         navigate("/");
@@ -57,11 +47,7 @@ const AuthPage: React.FC = () => {
           return;
         }
 
-        await api.post("/users/register", {
-          username: form.username,
-          email: form.email,
-          password: form.password,
-        });
+        await registerUser( form.username, form.email, form.password);
 
         toast.success("Account created. Please log in.");
         setIsLogin(true);
@@ -212,14 +198,7 @@ const AuthPage: React.FC = () => {
             onSuccess={async (credentialResponse: CredentialResponse) => {
               if (credentialResponse.credential) {
                 try {
-                  const res = await api.post(
-                    "/auth/oAuth-login",
-                    {
-                      idToken: credentialResponse.credential,
-                    },
-                    { withCredentials: true }
-                  );
-
+                  const res = await googleLogin(credentialResponse.credential);
                   const token = res.data.accessToken;
                   login(token);
                   toast.success("Google login successful");
