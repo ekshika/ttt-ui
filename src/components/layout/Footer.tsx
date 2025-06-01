@@ -1,5 +1,5 @@
 import { ArrowUp } from 'lucide-react';
-import Container from './ui/Container';
+import Container from '../ui/Container';
 
 const Footer = () => {
   const scrollToTop = () => {

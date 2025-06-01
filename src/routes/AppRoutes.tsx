@@ -2,13 +2,13 @@
 import { Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
-import HomePage from '../pages/HomePage';
-import AuthPage from '../pages/AuthPage';
-import ChatbotsPage from '../pages/ChatbotsPage';
-import AgenticWorkflowsPage from '../pages/AgenticWorkflowsPage';
-import ProcessAutomationPage from '../pages/ProcessAutomationPage';
-import AiAppsPage from '../pages/AiAppsPage';
-import AdminDashboard from '../pages/AdminDashboard';
+import HomePage from '../pages/public/HomePage';
+import AuthPage from '../pages/public/AuthPage';
+import ChatbotsPage from '../pages/public/ChatbotsPage';
+import AgenticWorkflowsPage from '../pages/public/AgenticWorkflowsPage';
+import ProcessAutomationPage from '../pages/public/ProcessAutomationPage';
+import AiAppsPage from '../pages/public/AiAppsPage';
+import AdminDashboard from '../pages/admin/AdminDashboard';
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();

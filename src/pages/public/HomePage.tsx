@@ -1,12 +1,12 @@
 import { useEffect } from 'react';
-import Particles from '../components/ui/Particles';
-import Hero from '../components/Hero';
-import About from '../components/About';
-import Services from '../components/Services';
-import TechStack from '../components/TechStack';
-import WhyUs from '../components/WhyUs';
-import Pricing from '../components/Pricing';
-import Contact from '../components/Contact';
+import Particles from '../../components/ui/Particles';
+import Hero from '../../components/home/Hero';
+import About from '../../components/home/About';
+import Services from '../../components/home/ServicesList';
+import TechStack from '../../components/home/TechStack';
+import WhyUs from '../../components/home/WhyUs';
+import Pricing from '../../components/home/Pricing';
+import Contact from '../../components/home/Contact';
 
 const HomePage = () => {
   useEffect(() => {

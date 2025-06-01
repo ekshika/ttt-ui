@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import Container from './ui/Container';
-import { useAuth } from '../context/AuthContext';
+import Container from '../ui/Container';
+import { useAuth } from '../../context/AuthContext';
 import toast from 'react-hot-toast';
 
 const Navbar = () => {

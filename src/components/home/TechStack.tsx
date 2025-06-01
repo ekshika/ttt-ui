@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
-import Container from './ui/Container';
-import SectionHeading from './ui/SectionHeading';
+import Container from '../ui/Container';
+import SectionHeading from '../ui/SectionHeading';
 
 const TechStack = () => {
   const [ref, inView] = useInView({

@@ -1,8 +1,8 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { Rocket, Brain, Zap } from 'lucide-react';
-import Container from './ui/Container';
-import SectionHeading from './ui/SectionHeading';
+import Container from '../ui/Container';
+import SectionHeading from '../ui/SectionHeading';
 
 const About = () => {
   const [ref, inView] = useInView({

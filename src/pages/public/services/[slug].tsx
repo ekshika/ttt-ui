@@ -1,6 +1,6 @@
 import { useParams, useNavigate } from 'react-router-dom';
-import { services } from '../../data/services';
-import Container from '../../components/ui/Container';
+import { services } from '../../../data/services';
+import Container from '../../../components/ui/Container';
 import { ArrowLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';

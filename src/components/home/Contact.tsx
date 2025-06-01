@@ -2,9 +2,9 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { Send, Mail, Phone, MapPin } from 'lucide-react';
-import Container from './ui/Container';
-import SectionHeading from './ui/SectionHeading';
-import { createContact } from '../services/contactService';
+import Container from '../ui/Container';
+import SectionHeading from '../ui/SectionHeading';
+import { createContact } from '../../services/contactService';
 import { toast } from 'react-hot-toast';
 
 const Contact = () => {

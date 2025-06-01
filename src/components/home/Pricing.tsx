@@ -1,8 +1,8 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { Check, Zap, Target, Users, Rocket } from 'lucide-react';
-import Container from './ui/Container';
-import SectionHeading from './ui/SectionHeading';
+import Container from '../ui/Container';
+import SectionHeading from '../ui/SectionHeading';
 
 const Pricing = () => {
   const [ref, inView] = useInView({

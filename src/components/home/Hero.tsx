@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
-import Container from './ui/Container';
+import Container from '../ui/Container';
 
 const Hero = () => {
   return (

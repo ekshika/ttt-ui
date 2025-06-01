@@ -1,9 +1,9 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { Link } from 'react-router-dom';
-import Container from './ui/Container';
-import SectionHeading from './ui/SectionHeading';
-import { services } from '../data/services';
+import Container from '../ui/Container';
+import SectionHeading from '../ui/SectionHeading';
+import { services } from '../../data/services';
 
 const Services = () => {
   const [ref, inView] = useInView({

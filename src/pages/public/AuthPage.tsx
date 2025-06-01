@@ -2,11 +2,10 @@ import React, { useState } from "react";
 import { toast } from "react-hot-toast";
 import { Eye, EyeOff, Lock, Mail, User } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 import { GoogleLogin } from "@react-oauth/google";
 import { CredentialResponse } from "@react-oauth/google";
-import api from "../api/axios";
-import { loginUser, registerUser, forgotPassword, googleLogin } from "../services/authService";
+import { loginUser, registerUser, forgotPassword, googleLogin } from "../../services/authService";
 
 const AuthPage: React.FC = () => {
   const [isLogin, setIsLogin] = useState(true);

@@ -2,12 +2,12 @@
 import React, { useState, useEffect } from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import { Bell, Menu, User, LogOut } from 'lucide-react';
-import AdminSidebar from '../components/AdminSidebar';
+import AdminSidebar from '../../components/admin/AdminSidebar';
 import BlogManager from './BlogManager';
 import EventsManager from './EventsManager';
 import CareersManager from './CareersManager';
 import DashboardOverview from './DashboardOverview';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../../context/AuthContext';
 
 const AdminDashboard: React.FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);

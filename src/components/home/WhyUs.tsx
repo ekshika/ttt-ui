@@ -1,8 +1,8 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { Zap, Target, Users, Shield } from 'lucide-react';
-import Container from './ui/Container';
-import SectionHeading from './ui/SectionHeading';
+import Container from '../ui/Container';
+import SectionHeading from '../ui/SectionHeading';
 
 const WhyUs = () => {
   const [ref, inView] = useInView({

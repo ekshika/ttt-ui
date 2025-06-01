@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
-import ServiceDetail from '../components/ServiceDetail';
-import Container from '../components/ui/Container';
+import ServiceDetail from '../../components/home/ServiceDetail';
+import Container from '../../components/ui/Container';
 import { Puzzle } from 'lucide-react';
 
 const AgenticWorkflowsPage = () => {

@@ -3,10 +3,10 @@ import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { ArrowLeft, Check } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import Container from './ui/Container';
-import SectionHeading from './ui/SectionHeading';
-import { Service } from '../types/service';
-import { services } from '../data/services';
+import Container from '../ui/Container';
+import SectionHeading from '../ui/SectionHeading';
+import { Service } from '../../types/service';
+import { services } from '../../data/services';
 
 interface ServiceDetailProps {
   serviceId: string; // or serviceSlug if you're passing the slug

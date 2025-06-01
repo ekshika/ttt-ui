@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
-import { services } from '../../data/services';
-import Container from '../../components/ui/Container';
-import SectionHeading from '../../components/ui/SectionHeading';
+import { services } from '../../../data/services';
+import Container from '../../../components/ui/Container';
+import SectionHeading from '../../../components/ui/SectionHeading';
 import { ArrowLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
