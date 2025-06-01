@@ -1,7 +1,18 @@
+import { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { ArrowUp } from 'lucide-react';
 import Container from './ui/Container';
 
 const Footer = () => {
+  const location = useLocation();
+  const [hideFooter, setHideFooter] = useState(false);
+
+  useEffect(() => {
+    setHideFooter(location.pathname.startsWith('/admin'));
+  }, [location.pathname]);
+
+  if (hideFooter) return <></>;
+
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,

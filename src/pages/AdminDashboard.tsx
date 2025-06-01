@@ -1,28 +1,28 @@
 // src/pages/AdminDashboard.tsx
-import React, { useState, useEffect } from 'react';
-import { Routes, Route, useNavigate } from 'react-router-dom';
-import { Bell, Menu, User, LogOut } from 'lucide-react';
-import AdminSidebar from '../components/AdminSidebar';
-import BlogManager from './BlogManager';
-import EventsManager from './EventsManager';
-import CareersManager from './CareersManager';
-import DashboardOverview from './DashboardOverview';
-import { useAuth } from '../context/AuthContext';
+import React, { useState, useEffect } from "react";
+import { Routes, Route, useNavigate, Link } from "react-router-dom";
+import { Bell, Menu, User, LogOut } from "lucide-react";
+import AdminSidebar from "../components/AdminSidebar";
+import BlogManager from "./BlogManager";
+import EventsManager from "./EventsManager";
+import CareersManager from "./CareersManager";
+import DashboardOverview from "./DashboardOverview";
+import { useAuth } from "../context/AuthContext";
 
 const AdminDashboard: React.FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const navigate = useNavigate();
-  const { logout, user } = useAuth();
+  const { user, logout } = useAuth();
 
   useEffect(() => {
-    if (!user || user.role !== 'admin') {
-      navigate('/login');
+    if (!user || user.role !== "admin") {
+      navigate("/login");
     }
   }, [user, navigate]);
 
   const handleLogout = async () => {
     await logout();
-    navigate('/login');
+    navigate("/login");
   };
 
   return (
@@ -31,12 +31,12 @@ const AdminDashboard: React.FC = () => {
       <div className="lg:hidden">
         <div
           className="fixed inset-0 bg-gray-600 bg-opacity-75 z-40"
-          style={{ display: sidebarOpen ? 'block' : 'none' }}
+          style={{ display: sidebarOpen ? "block" : "none" }}
           onClick={() => setSidebarOpen(false)}
         />
         <div
           className={`fixed inset-y-0 left-0 w-64 bg-white transform transition-transform duration-300 ease-in-out z-50 ${
-            sidebarOpen ? 'translate-x-0' : '-translate-x-full'
+            sidebarOpen ? "translate-x-0" : "-translate-x-full"
           }`}
         >
           <AdminSidebar onClose={() => setSidebarOpen(false)} />
@@ -71,8 +71,12 @@ const AdminDashboard: React.FC = () => {
                   <User className="h-5 w-5" />
                 </div>
                 <div className="hidden md:block">
-                  <p className="text-sm font-medium text-gray-900">{user?.sub || 'Admin'}</p>
-                  <p className="text-xs text-gray-500">{user?.role || 'admin'}</p>
+                  <p className="text-sm font-medium text-gray-900">
+                    {user?.sub || "Admin"}
+                  </p>
+                  <p className="text-xs text-gray-500">
+                    {user?.role || "admin"}
+                  </p>
                 </div>
                 <button
                   onClick={handleLogout}

@@ -11,14 +11,16 @@ const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
-  const isHomePage = location.pathname === '/';
   const { user, logout } = useAuth();
+
+  const isHomePage = location.pathname === '/';
+  const isAdminPage = location.pathname.startsWith('/admin');
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
   const handleLogout = () => {
     logout();
-    toast.success("Log out successfull!")
+    toast.success("Log out successful!");
     navigate('/login');
   };
 
@@ -36,6 +38,7 @@ const Navbar = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+
   const navLinks = [
     { name: 'Home', href: isHomePage ? '#home' : '/' },
     { name: 'About', href: isHomePage ? '#about' : '/#about' },
@@ -45,7 +48,7 @@ const Navbar = () => {
     { name: 'Pricing', href: isHomePage ? '#pricing' : '/#pricing' },
     { name: 'Contact', href: isHomePage ? '#contact' : '/#contact' },
   ];
-
+  if (isAdminPage) return <></>; // ✅ safe placeholder without skipping hooks
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
@@ -87,7 +90,12 @@ const Navbar = () => {
 
             {user ? (
               <>
-                <span className="text-gray-600 text-sm">Hi, {user.sub}</span>
+                <Link
+                  to="/admin"
+                  className="text-gray-600 text-sm hover:underline"
+                >
+                  Hi, {user.sub}
+                </Link>
                 <button
                   onClick={handleLogout}
                   className="text-sm text-red-600 hover:underline ml-2"
@@ -146,7 +154,13 @@ const Navbar = () => {
 
                 {user ? (
                   <>
-                    <span className="text-gray-600">Hi, {user.sub}</span>
+                    <Link
+                      to="/admin"
+                      onClick={() => setIsMenuOpen(false)}
+                      className="text-gray-600 text-lg hover:underline"
+                    >
+                      Hi, {user.sub}
+                    </Link>
                     <button
                       onClick={() => {
                         handleLogout();

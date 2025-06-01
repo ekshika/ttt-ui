@@ -1,4 +1,3 @@
-// src/context/AuthContext.tsx (refined debounce fix for refresh)
 import {
   createContext,
   useContext,
@@ -13,6 +12,7 @@ import api from '../api/axios';
 interface AuthContextType {
   user: { sub: string; role: string } | null;
   accessToken: string | null;
+  loading: boolean;
   login: (token: string) => void;
   logout: () => void;
 }
@@ -24,6 +24,7 @@ let tokenFetched = false;
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const [user, setUser] = useState<{ sub: string; role: string } | null>(null);
+  const [loading, setLoading] = useState(true);
 
   const login = (token: string) => {
     setAccessToken(token);
@@ -61,11 +62,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     } catch (err) {
       console.warn('[Auth] Refresh failed. Logging out.');
       logout();
+    } finally {
+      setLoading(false);
     }
   }, []);
 
   useEffect(() => {
-    refreshToken();
+    refreshToken().finally(() => setLoading(false));
   }, [refreshToken]);
 
   useEffect(() => {
@@ -104,7 +107,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, [refreshToken]);
 
   return (
-    <AuthContext.Provider value={{ user, accessToken, login, logout }}>
+    <AuthContext.Provider value={{ user, accessToken, loading, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
