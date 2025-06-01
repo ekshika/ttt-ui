@@ -2,13 +2,13 @@
 import { Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
+
 import HomePage from '../pages/public/HomePage';
 import AuthPage from '../pages/public/AuthPage';
-import ChatbotsPage from '../pages/public/ChatbotsPage';
-import AgenticWorkflowsPage from '../pages/public/AgenticWorkflowsPage';
-import ProcessAutomationPage from '../pages/public/ProcessAutomationPage';
-import AiAppsPage from '../pages/public/AiAppsPage';
 import AdminDashboard from '../pages/admin/AdminDashboard';
+
+import ServicesRoutes from './ServicesRoutes';
+import AdminRoutes from './AdminRoutes';
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -18,7 +18,13 @@ const ScrollToTop = () => {
   return null;
 };
 
-const ProtectedRoute = ({ children, roles = [] }: { children: JSX.Element; roles?: string[] }) => {
+const ProtectedRoute = ({
+  children,
+  roles = [],
+}: {
+  children: JSX.Element;
+  roles?: string[];
+}) => {
   const { user } = useAuth();
   const isAuthenticated = !!user;
   const hasRoleAccess = roles.length === 0 || (user && roles.includes(user.role));
@@ -30,24 +36,25 @@ const ProtectedRoute = ({ children, roles = [] }: { children: JSX.Element; roles
 };
 
 export const withAuthGuard = (Component: JSX.Element, roles: string[] = []) => {
-  return (
-    <ProtectedRoute roles={roles}>
-      {Component}
-    </ProtectedRoute>
-  );
+  return <ProtectedRoute roles={roles}>{Component}</ProtectedRoute>;
 };
 
 const AppRoutes = () => (
   <>
     <ScrollToTop />
+
     <Routes>
+      {/* Public routes */}
       <Route path="/" element={<HomePage />} />
       <Route path="/login" element={<AuthPage />} />
-      <Route path="/services/ai-chatbots" element={<ChatbotsPage />} />
-      <Route path="/services/agentic-ai-workflows" element={<AgenticWorkflowsPage />} />
-      <Route path="/services/smart-process-automation" element={<ProcessAutomationPage />} />
-      <Route path="/services/ai-apps-micro-saas" element={<AiAppsPage />} />
-      <Route path="/admin/*" element={withAuthGuard(<AdminDashboard />, ['admin'])} />
+
+      {/* All /services/* routes are delegated to ServicesRoutes */}
+      <Route path="/services/*">{ServicesRoutes()}</Route>
+
+      {/* Admin routes (protected) */}
+      <Route path="/admin/*" element={withAuthGuard(<AdminDashboard />, ['admin'])}>
+      {AdminRoutes()}
+      </Route>
     </Routes>
   </>
 );

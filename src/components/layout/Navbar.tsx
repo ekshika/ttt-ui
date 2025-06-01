@@ -46,6 +46,12 @@ const Navbar = () => {
     { name: 'Contact', href: isHomePage ? '#contact' : '/#contact' },
   ];
 
+    // Hide navbar on any /admin route
+    if (location.pathname.startsWith("/admin")) {
+      return null;
+    }
+  
+
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
@@ -87,7 +93,12 @@ const Navbar = () => {
 
             {user ? (
               <>
-                <span className="text-gray-600 text-sm">Hi, {user.sub}</span>
+                <Link
+                  to="/admin"
+                  className="text-sm text-gray-600 hover:underline"
+                >
+                  Hi, {user.sub}
+                </Link>
                 <button
                   onClick={handleLogout}
                   className="text-sm text-red-600 hover:underline ml-2"

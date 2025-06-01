@@ -6,6 +6,7 @@ import {
   Calendar,
   Briefcase,
   Settings,
+  HomeIcon,
   X,
 } from 'lucide-react';
 
@@ -16,6 +17,7 @@ interface AdminSidebarProps {
 const AdminSidebar: React.FC<AdminSidebarProps> = ({ onClose }) => {
   const navigation = [
     { name: 'Dashboard', href: '/admin', icon: LayoutDashboard },
+    { name: 'Home', href: '/', icon: HomeIcon },
     { name: 'Blog', href: '/admin/blog', icon: FileText },
     { name: 'Events', href: '/admin/events', icon: Calendar },
     { name: 'Careers', href: '/admin/careers', icon: Briefcase },

@@ -1,22 +1,36 @@
+import { useLocation } from 'react-router-dom';
 import { ArrowUp } from 'lucide-react';
 import Container from '../ui/Container';
 
 const Footer = () => {
+  const location = useLocation();
+  
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
       behavior: 'smooth',
     });
   };
-
+  
+    // Hide footer on any /admin route
+    if (location.pathname.startsWith('/admin')) {
+      return null;
+    }
+  
   return (
     <footer className="bg-primary text-white pt-16 pb-8">
       <Container>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
           <div>
             <div className="flex items-center gap-2 mb-6">
-              <img src="/logo.svg" alt="Teeny Tech Trek Logo" className="w-8 h-8 bg-white p-1 rounded-md" />
-              <span className="text-xl font-display font-semibold">Teeny Tech Trek</span>
+              <img
+                src="/logo.svg"
+                alt="Teeny Tech Trek Logo"
+                className="w-8 h-8 bg-white p-1 rounded-md"
+              />
+              <span className="text-xl font-display font-semibold">
+                Teeny Tech Trek
+              </span>
             </div>
             <p className="text-white/80 mb-4">
               Small Teams. Big Impact. Powered by AI.
@@ -33,7 +47,7 @@ const Footer = () => {
               ))}
             </div>
           </div>
-          
+
           <div>
             <h4 className="text-lg font-medium mb-4">Services</h4>
             <ul className="space-y-2">
@@ -42,17 +56,20 @@ const Footer = () => {
                 'Agentic AI Workflows',
                 'Smart Process Automation',
                 'Lightweight AI Apps',
-                'AI Consulting'
+                'AI Consulting',
               ].map((service, index) => (
                 <li key={index}>
-                  <a href="#services" className="text-white/80 hover:text-white transition-colors duration-300">
+                  <a
+                    href="#services"
+                    className="text-white/80 hover:text-white transition-colors duration-300"
+                  >
                     {service}
                   </a>
                 </li>
               ))}
             </ul>
           </div>
-          
+
           <div>
             <h4 className="text-lg font-medium mb-4">Company</h4>
             <ul className="space-y-2">
@@ -64,26 +81,35 @@ const Footer = () => {
                 { name: 'Contact', href: '#contact' },
               ].map((link, index) => (
                 <li key={index}>
-                  <a href={link.href} className="text-white/80 hover:text-white transition-colors duration-300">
+                  <a
+                    href={link.href}
+                    className="text-white/80 hover:text-white transition-colors duration-300"
+                  >
                     {link.name}
                   </a>
                 </li>
               ))}
             </ul>
           </div>
-          
+
           <div>
             <h4 className="text-lg font-medium mb-4">Contact</h4>
             <ul className="space-y-4">
               <li className="flex items-start gap-2">
                 <span className="text-white/80">Email:</span>
-                <a href="mailto:hello@teenytechtrek.com" className="text-white hover:underline">
+                <a
+                  href="mailto:hello@teenytechtrek.com"
+                  className="text-white hover:underline"
+                >
                   hello@teenytechtrek.com
                 </a>
               </li>
               <li className="flex items-start gap-2">
                 <span className="text-white/80">Phone:</span>
-                <a href="tel:+15551234567" className="text-white hover:underline">
+                <a
+                  href="tel:+15551234567"
+                  className="text-white hover:underline"
+                >
                   +1 (555) 123-4567
                 </a>
               </li>
@@ -94,14 +120,18 @@ const Footer = () => {
             </ul>
           </div>
         </div>
-        
+
         <div className="pt-8 border-t border-white/20 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-white/70 text-sm text-center md:text-left">
             © {new Date().getFullYear()} Teeny Tech Trek. All rights reserved.
           </p>
           <div className="flex gap-6 text-sm text-white/70">
-            <a href="#" className="hover:text-white transition-colors duration-300">Privacy Policy</a>
-            <a href="#" className="hover:text-white transition-colors duration-300">Terms of Service</a>
+            <a href="#" className="hover:text-white transition-colors duration-300">
+              Privacy Policy
+            </a>
+            <a href="#" className="hover:text-white transition-colors duration-300">
+              Terms of Service
+            </a>
           </div>
           <button
             onClick={scrollToTop}

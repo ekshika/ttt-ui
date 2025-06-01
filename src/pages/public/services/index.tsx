@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import { services } from '../../../data/services';
 import Container from '../../../components/ui/Container';
 import SectionHeading from '../../../components/ui/SectionHeading';
@@ -6,7 +6,7 @@ import { ArrowLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 export default function ServicesPage() {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   
   return (
     <section className="py-20">
