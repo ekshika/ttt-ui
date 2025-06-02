@@ -1,7 +1,7 @@
 // src/routes/AppRoutes.tsx
-import { Routes, Route, useLocation, Navigate } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
-import { useAuth } from '../context/AuthContext';
+import { withAuthGuard } from './RouteGuards';
 
 import HomePage from '../pages/public/HomePage';
 import AuthPage from '../pages/public/AuthPage';
@@ -21,27 +21,6 @@ const ScrollToTop = () => {
   }, [pathname, hash]);
 
   return null;
-};
-
-const ProtectedRoute = ({
-  children,
-  roles = [],
-}: {
-  children: JSX.Element;
-  roles?: string[];
-}) => {
-  const { user } = useAuth();
-  const isAuthenticated = !!user;
-  const hasRoleAccess = roles.length === 0 || (user && roles.includes(user.role));
-
-  if (!isAuthenticated) return <Navigate to="/login" replace />;
-  if (!hasRoleAccess) return <Navigate to="/" replace />;
-
-  return children;
-};
-
-export const withAuthGuard = (Component: JSX.Element, roles: string[] = []) => {
-  return <ProtectedRoute roles={roles}>{Component}</ProtectedRoute>;
 };
 
 const AppRoutes = () => (
