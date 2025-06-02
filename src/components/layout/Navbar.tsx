@@ -1,7 +1,9 @@
+// src/components/layout/Navbar.tsx
 import { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { HashLink as Link } from 'react-router-hash-link';
 import Container from '../ui/Container';
 import { useAuth } from '../../context/AuthContext';
 import toast from 'react-hot-toast';
@@ -18,7 +20,7 @@ const Navbar = () => {
 
   const handleLogout = () => {
     logout();
-    toast.success("Log out successfull!")
+    toast.success("Log out successfull!");
     navigate('/login');
   };
 
@@ -37,7 +39,7 @@ const Navbar = () => {
   }, []);
 
   const navLinks = [
-    { name: 'Home', href: isHomePage ? '#home' : '/' },
+    { name: 'Home', href: isHomePage ? '#home' : '/#home' },
     { name: 'About', href: isHomePage ? '#about' : '/#about' },
     { name: 'Services', href: isHomePage ? '#services' : '/#services' },
     { name: 'Tech Stack', href: isHomePage ? '#tech-stack' : '/#tech-stack' },
@@ -46,11 +48,10 @@ const Navbar = () => {
     { name: 'Contact', href: isHomePage ? '#contact' : '/#contact' },
   ];
 
-    // Hide navbar on any /admin route
-    if (location.pathname.startsWith("/admin")) {
-      return null;
-    }
-  
+  // Hide navbar on any /admin route
+  if (location.pathname.startsWith("/admin")) {
+    return null;
+  }
 
   return (
     <header
@@ -72,21 +73,13 @@ const Navbar = () => {
             <ul className="flex items-center space-x-2 lg:space-x-6 mr-4">
               {navLinks.map((link) => (
                 <li key={link.name}>
-                  {link.href.startsWith('#') || link.href.includes('/#') ? (
-                    <a
-                      href={link.href}
-                      className="nav-link px-2 py-2 text-sm lg:text-base whitespace-nowrap"
-                    >
-                      {link.name}
-                    </a>
-                  ) : (
-                    <Link
-                      to={link.href}
-                      className="nav-link px-2 py-2 text-sm lg:text-base whitespace-nowrap"
-                    >
-                      {link.name}
-                    </Link>
-                  )}
+                  <Link
+                    smooth
+                    to={link.href}
+                    className="nav-link px-2 py-2 text-sm lg:text-base whitespace-nowrap"
+                  >
+                    {link.name}
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -115,12 +108,13 @@ const Navbar = () => {
               </Link>
             )}
 
-            <a
-              href="#contact"
+            <Link
+              smooth
+              to="/#contact"
               className="btn btn-primary text-sm lg:text-base whitespace-nowrap min-w-[120px] text-center"
             >
               Get Started
-            </a>
+            </Link>
           </div>
 
           {/* Mobile Menu Button */}
@@ -145,14 +139,15 @@ const Navbar = () => {
             >
               <div className="flex flex-col items-center justify-center min-h-screen space-y-6 p-4">
                 {navLinks.map((link) => (
-                  <a
+                  <Link
                     key={link.name}
-                    href={link.href}
+                    smooth
+                    to={link.href}
                     className="text-xl font-medium text-gray-800 hover:text-primary transition-colors"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     {link.name}
-                  </a>
+                  </Link>
                 ))}
 
                 {user ? (
@@ -178,13 +173,14 @@ const Navbar = () => {
                   </Link>
                 )}
 
-                <a
-                  href="#contact"
+                <Link
+                  smooth
+                  to="/#contact"
                   className="btn btn-primary mt-4 w-full max-w-[200px] text-center"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   Get Started
-                </a>
+                </Link>
               </div>
             </motion.div>
           )}

@@ -11,10 +11,15 @@ import ServicesRoutes from './ServicesRoutes';
 import AdminRoutes from './AdminRoutes';
 
 const ScrollToTop = () => {
-  const { pathname } = useLocation();
+  const { pathname, hash } = useLocation();
+
   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [pathname]);
+    // Only scroll to top if there is NO hash; otherwise let HashLink handle anchor scrolling
+    if (!hash) {
+      window.scrollTo(0, 0);
+    }
+  }, [pathname, hash]);
+
   return null;
 };
 
@@ -53,7 +58,7 @@ const AppRoutes = () => (
 
       {/* Admin routes (protected) */}
       <Route path="/admin/*" element={withAuthGuard(<AdminDashboard />, ['admin'])}>
-      {AdminRoutes()}
+        {AdminRoutes()}
       </Route>
     </Routes>
   </>
