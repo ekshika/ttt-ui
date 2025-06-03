@@ -12,7 +12,7 @@ const CareersManager: React.FC = () => {
 
       <div className="bg-white shadow rounded-lg p-6">
         <div className="space-y-4">
-          <p className="text-gray-500">No job positions found.</p>
+          <p className="text-gray-500">Coming Soon.....</p>
         </div>
       </div>
     </div>

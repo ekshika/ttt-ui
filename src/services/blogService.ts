@@ -68,6 +68,23 @@ export async function searchBlogs(
 }
 
 /**
+ * Admin only: fetch blogs by status
+ * Internally just calls searchBlogs({ field: "status", value: <status> })
+ */
+export async function getBlogsByStatus(
+    status: string,
+    token: string
+  ): Promise<Blog[]> {
+    // We reuse the “searchBlogs” endpoint:
+    const config = {
+      ...authHeaders(token),
+      params: { field: "status", value: status },
+    };
+    const resp = await api.get<Blog[]>("/blogs/search", config);
+    return resp.data;
+  }  
+
+/**
  * Admin only: fetch all blogs (no status filter)
  * GET /api/blogs
  */

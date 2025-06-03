@@ -4,14 +4,15 @@ import ChatbotsPage from '../pages/public/ChatbotsPage';
 import AgenticWorkflowsPage from '../pages/public/AgenticWorkflowsPage';
 import ProcessAutomationPage from '../pages/public/ProcessAutomationPage';
 import AiAppsPage from '../pages/public/AiAppsPage';
+import { Fragment } from 'react/jsx-runtime';
 
 const ServicesRoutes = () => (
-  <>
+  <Fragment>
     <Route path="ai-chatbots" element={<ChatbotsPage />} />
     <Route path="agentic-ai-workflows" element={<AgenticWorkflowsPage />} />
     <Route path="smart-process-automation" element={<ProcessAutomationPage />} />
     <Route path="ai-apps-micro-saas" element={<AiAppsPage />} />
-  </>
+  </Fragment>
 );
 
 export default ServicesRoutes;

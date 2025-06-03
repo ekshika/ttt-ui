@@ -5,19 +5,15 @@ import { withAuthGuard } from './RouteGuards';
 
 import HomePage from '../pages/public/HomePage';
 import AuthPage from '../pages/public/AuthPage';
-import AdminDashboard from '../pages/admin/AdminDashboard';
-
 import ServicesRoutes from './ServicesRoutes';
-import AdminRoutes from './AdminRoutes';
+import AdminDashboard from '../pages/admin/AdminDashboard';
+import AdminRoutes from './Admin/AdminRoutes';
 
 const ScrollToTop = () => {
   const { pathname, hash } = useLocation();
 
   useEffect(() => {
-    // Only scroll to top if there is NO hash; otherwise let HashLink handle anchor scrolling
-    if (!hash) {
-      window.scrollTo(0, 0);
-    }
+    if (!hash) window.scrollTo(0, 0);
   }, [pathname, hash]);
 
   return null;
@@ -32,13 +28,20 @@ const AppRoutes = () => (
       <Route path="/" element={<HomePage />} />
       <Route path="/login" element={<AuthPage />} />
 
-      {/* All /services/* routes are delegated to ServicesRoutes */}
-      <Route path="/services/*">{ServicesRoutes()}</Route>
+      {/* All /services/* routes → rendered by the <ServicesRoutes /> component */}
+      <Route path="services/*" element={<ServicesRoutes />} />
 
-      {/* Admin routes (protected) */}
-      <Route path="/admin/*" element={withAuthGuard(<AdminDashboard />, ['admin'])}>
+      {/* Admin (protected) */}
+      <Route
+        path="admin/*"
+        element={withAuthGuard(<AdminDashboard />, ['admin'])}
+      >
+        {/* Nested admin‐only sub‐routes */}
         {AdminRoutes()}
       </Route>
+
+      {/* Optional: catch‐all */}
+      <Route path="*" element={<div>404: Not Found</div>} />
     </Routes>
   </>
 );

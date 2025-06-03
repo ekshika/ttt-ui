@@ -24,5 +24,6 @@ export interface Blog {
     content?: string;
     media_cid?: string;
     status?: 'draft' | 'published' | 'archived';
+    published_at: string
   }
   
