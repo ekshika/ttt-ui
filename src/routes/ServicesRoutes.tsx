@@ -1,9 +1,9 @@
 // src/routes/ServicesRoutes.tsx
 import { Route } from 'react-router-dom';
-import ChatbotsPage from '../pages/public/ChatbotsPage';
-import AgenticWorkflowsPage from '../pages/public/AgenticWorkflowsPage';
-import ProcessAutomationPage from '../pages/public/ProcessAutomationPage';
-import AiAppsPage from '../pages/public/AiAppsPage';
+import ChatbotsPage from '../pages/public/services/ChatbotsPage';
+import AgenticWorkflowsPage from '../pages/public/services/AgenticWorkflowsPage';
+import ProcessAutomationPage from '../pages/public/services/ProcessAutomationPage';
+import AiAppsPage from '../pages/public/services/AiAppsPage';
 import { Fragment } from 'react/jsx-runtime';
 
 const ServicesRoutes = () => (

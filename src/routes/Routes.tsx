@@ -29,7 +29,8 @@ const AppRoutes = () => (
       <Route path="/login" element={<AuthPage />} />
 
       {/* All /services/* routes → rendered by the <ServicesRoutes /> component */}
-      <Route path="services/*" element={<ServicesRoutes />} />
+      <Route path="services/*">
+      {ServicesRoutes()}</Route>
 
       {/* Admin (protected) */}
       <Route

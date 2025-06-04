@@ -7,6 +7,7 @@ import TechStack from '../../components/home/TechStack';
 import WhyUs from '../../components/home/WhyUs';
 import Pricing from '../../components/home/Pricing';
 import Contact from '../../components/home/Contact';
+import BlogDisplayPage from '../../components/home/Blog';
 
 const HomePage = () => {
   useEffect(() => {
@@ -43,6 +44,7 @@ const HomePage = () => {
       </div>
       <About />
       <Services />
+      <BlogDisplayPage/>
       <TechStack />
       <WhyUs />
       <Pricing />
