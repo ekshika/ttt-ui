@@ -13,7 +13,7 @@ const Footer = () => {
   };
   
     // Hide footer on any /admin route
-    if (location.pathname.startsWith('/admin')) {
+    if (location.pathname.startsWith('/admin') || location.pathname.startsWith("/login")) {
       return null;
     }
   

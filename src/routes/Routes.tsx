@@ -8,6 +8,8 @@ import AuthPage from '../pages/public/AuthPage';
 import ServicesRoutes from './ServicesRoutes';
 import AdminDashboard from '../pages/admin/AdminDashboard';
 import AdminRoutes from './Admin/AdminRoutes';
+import BlogSingleView from '../pages/public/BlogDetail';
+import SingleEventPage from '../pages/public/EventDetail';
 
 const ScrollToTop = () => {
   const { pathname, hash } = useLocation();
@@ -27,6 +29,12 @@ const AppRoutes = () => (
       {/* Public routes */}
       <Route path="/" element={<HomePage />} />
       <Route path="/login" element={<AuthPage />} />
+
+      {/* ←── New public route for "single blog" */}
+      <Route path="/blog/:slug" element={<BlogSingleView />} />
+
+      {/* ←── New public route for "single blog" */}
+      <Route path="/event/:slug" element={<SingleEventPage />} />
 
       {/* All /services/* routes → rendered by the <ServicesRoutes /> component */}
       <Route path="services/*">

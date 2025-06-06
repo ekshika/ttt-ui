@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { getPublicBlogs } from "../../services/blogService"; // ← adjust this path as needed
-import type { Blog } from "../../types/blog"; // ← adjust this path as needed
+import { useEffect, useState } from "react";
+import { getPublicBlogs } from "../../services/blogService"; // Adjust this path if needed
+import type { Blog } from "../../types/blog"; // Adjust this path if needed
 
 const PRIMARY = "#1f528c";
 const SECONDARY = "#3e6aa7";
@@ -30,14 +30,14 @@ export default function BlogDisplayPage() {
     return (
       <div
         style={{
-          background: `linear-gradient(135deg, ${PRIMARY} 55%, ${SECONDARY})`,
+          background: "#fff",
           minHeight: "100vh",
           fontFamily: FONT_FAMILY,
           padding: "40px 0",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          color: "#fff",
+          color: "#333",
           fontSize: 18,
         }}
       >
@@ -50,14 +50,14 @@ export default function BlogDisplayPage() {
     return (
       <div
         style={{
-          background: `linear-gradient(135deg, ${PRIMARY} 55%, ${SECONDARY})`,
+          background: "#fff",
           minHeight: "100vh",
           fontFamily: FONT_FAMILY,
           padding: "40px 0",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          color: "#fff",
+          color: "#d32f2f",
           fontSize: 18,
         }}
       >
@@ -69,10 +69,10 @@ export default function BlogDisplayPage() {
   return (
     <div
       style={{
-        background: `linear-gradient(135deg, ${PRIMARY} 55%, ${SECONDARY})`,
+        background: "#fff",
         minHeight: "100vh",
         fontFamily: FONT_FAMILY,
-        padding: "40px 0",
+        padding: "0 0 60px 0",
       }}
     >
       <div
@@ -84,20 +84,22 @@ export default function BlogDisplayPage() {
       >
         <h2
           style={{
-            color: "#fff",
+            color: PRIMARY,
             fontFamily: FONT_FAMILY,
             fontWeight: 800,
-            fontSize: 34,
-            marginBottom: 36,
+            fontSize: 38,
+            marginBottom: 18,
             textAlign: "center",
             letterSpacing: "-1px",
+            padding: "60px 0 30px 0", // Top/Bottom padding like your tech stack
+            background: "#fff",
           }}
         >
           Blog Articles
         </h2>
 
         {blogs.length === 0 && (
-          <div style={{ color: "#fff", fontSize: 18, textAlign: "center" }}>
+          <div style={{ color: "#888", fontSize: 18, textAlign: "center" }}>
             No blogs published yet.
           </div>
         )}
@@ -178,7 +180,7 @@ export default function BlogDisplayPage() {
                   {blog.content?.slice(0, 110) ?? ""}
                   {blog.content && blog.content.length > 110 && "..."}
                 </div>
-                <div
+                {/* <div
                   style={{
                     marginTop: "auto",
                     display: "flex",
@@ -196,7 +198,7 @@ export default function BlogDisplayPage() {
                       ? new Date(blog.published_at).toLocaleDateString()
                       : ""}
                   </span>
-                </div>
+                </div> */}
               </div>
               <div
                 style={{

@@ -1,119 +1,127 @@
-import { motion } from 'framer-motion';
-import { useInView } from 'react-intersection-observer';
-import { Check, Zap, Target, Users, Rocket } from 'lucide-react';
-import Container from '../ui/Container';
-import SectionHeading from '../ui/SectionHeading';
+// File: src/components/SubscriptionPricing.tsx
 
-const Pricing = () => {
+import React, { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import { useInView } from "react-intersection-observer";
+import { Check } from "lucide-react";
+import Container from "../ui/Container";
+import SectionHeading from "../ui/SectionHeading";
+import { getPublicPackagesByField } from "../../services/packageService"; // adjust path if needed
+import { Package } from "../../types/package";
+
+/**
+ * SubscriptionPricing
+ *
+ * Fetches all “subscription” packages from the API and displays them
+ * in a grid of cards using the same styling/design as the hardcoded version.
+ * Shows a “No subscription packages found.” message if the API returns no data.
+ */
+const SubscriptionPricing: React.FC = () => {
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.1,
   });
 
-  const plans = [
-    {
-      name: "Starter Strategy Call",
-      icon: <Target className="text-primary" size={24} />,
-      price: {
-        inr: "₹4,999",
-        usd: "$60"
-      },
-      duration: "45 minutes",
-      description: "Perfect for founders and creators exploring AI potential",
-      features: [
-        "AI opportunity assessment",
-        "Quick-win identification",
-        "Tech stack recommendations",
-        "Implementation roadmap overview",
-        "ROI calculation guidance",
-        "Follow-up resource pack"
-      ],
-      popular: false
-    },
-    {
-      name: "AI Readiness Audit",
-      icon: <Users className="text-primary" size={24} />,
-      price: {
-        inr: "₹9,999",
-        usd: "$120"
-      },
-      duration: "90-minute consultation + PDF",
-      description: "For businesses evaluating AI implementation",
-      features: [
-        "Deep-dive process analysis",
-        "AI readiness assessment",
-        "Integration opportunity mapping",
-        "Detailed PDF report",
-        "Risk assessment",
-        "3-month action plan",
-        "Tool recommendations"
-      ],
-      popular: true
-    },
-    {
-      name: "Custom AI Roadmap",
-      icon: <Zap className="text-primary" size={24} />,
-      price: {
-        inr: "₹24,999",
-        usd: "$299"
-      },
-      duration: "3-5 hours (2 sessions)",
-      description: "Teams ready for 30-60 day implementation",
-      features: [
-        "Complete workflow analysis",
-        "Custom implementation plan",
-        "ROI projections",
-        "Technical requirements doc",
-        "Vendor recommendations",
-        "Timeline & milestones",
-        "Team training outline",
-        "Risk mitigation strategy"
-      ],
-      popular: false
-    },
-    {
-      name: "Done-With-You AI Sprint",
-      icon: <Rocket className="text-primary" size={24} />,
-      price: {
-        inr: "₹59,999",
-        usd: "$699"
-      },
-      duration: "8-10 hours over 2 weeks",
-      description: "Strategic AI implementation projects",
-      features: [
-        "Hands-on implementation",
-        "Custom AI solution setup",
-        "Integration support",
-        "Team training sessions",
-        "Testing & optimization",
-        "Documentation & SOPs",
-        "30-day support",
-        "Quarterly review session"
-      ],
-      popular: false
-    }
-  ];
+  const [packages, setPackages] = useState<Package[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
+  useEffect(() => {
+    let isMounted = true;
+
+    async function fetchSubscriptions() {
+      try {
+        setLoading(true);
+        const data = await getPublicPackagesByField("package_type", "subscription");
+        if (isMounted) {
+          setPackages(data);
+        }
+      } catch (err) {
+        console.error("Error fetching subscription packages:", err);
+        if (isMounted) {
+          setError(true);
+        }
+      } finally {
+        if (isMounted) {
+          setLoading(false);
+        }
+      }
+    }
+
+    fetchSubscriptions();
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  // Animation variants
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-      },
+      transition: { staggerChildren: 0.1 },
     },
   };
-
   const itemVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0 },
   };
 
+  // Loading state
+  if (loading) {
+    return (
+      <section className="py-20 bg-gradient-to-b from-white to-primary-100/30">
+        <Container>
+          <SectionHeading
+            title="Subscription Packages"
+            subtitle="Loading subscription packages…"
+          />
+          <div className="text-center py-16 text-gray-600">Loading…</div>
+        </Container>
+      </section>
+    );
+  }
+
+  // Error state
+  if (error) {
+    return (
+      <section className="py-20 bg-gradient-to-b from-white to-primary-100/30">
+        <Container>
+          <SectionHeading
+            title="Subscription Packages"
+            subtitle="Unable to load subscription packages"
+          />
+          <div className="text-center py-16 text-red-500">
+            Something went wrong. Please try again later.
+          </div>
+        </Container>
+      </section>
+    );
+  }
+
+  // No-data state
+  if (!packages.length) {
+    return (
+      <section className="py-20 bg-gradient-to-b from-white to-primary-100/30">
+        <Container>
+          <SectionHeading
+            title="Subscription Packages"
+            subtitle="Choose the perfect plan to accelerate your AI journey"
+          />
+          <div className="text-center py-16 text-gray-600">
+            No subscription packages found.
+          </div>
+        </Container>
+      </section>
+    );
+  }
+
+  // Render the subscription packages
   return (
     <section id="pricing" className="py-20 bg-gradient-to-b from-white to-primary-100/30">
       <Container>
         <SectionHeading
-          title="Simple, Transparent Pricing"
+          title="Subscription Packages"
           subtitle="Choose the perfect plan to accelerate your AI journey"
         />
 
@@ -124,59 +132,71 @@ const Pricing = () => {
           variants={containerVariants}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mt-12"
         >
-          {plans.map((plan, index) => (
-            <motion.div
-              key={index}
-              variants={itemVariants}
-              className={`relative card flex flex-col ${
-                plan.popular ? 'border-2 border-primary shadow-lg' : ''
-              }`}
-            >
-              {plan.popular && (
-                <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                  <span className="bg-primary text-white px-4 py-1 rounded-full text-sm font-medium">
-                    Most Popular
-                  </span>
-                </div>
-              )}
+          {packages.map((pkg, index) => {
+            // Format price as INR
+            const priceText = `₹${pkg.price.toLocaleString()}`;
 
-              <div className="mb-6">
-                <div className="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center mb-4">
-                  {plan.icon}
-                </div>
-                <h3 className="text-xl font-semibold mb-2">{plan.name}</h3>
-                <p className="text-gray-600 text-sm">{plan.description}</p>
-              </div>
+            // Format duration
+            const durationText =
+              pkg.duration_days > 1
+                ? `${pkg.duration_days} days`
+                : `${pkg.duration_days} day`;
 
-              <div className="mb-6">
-                <div className="flex items-baseline gap-2 mb-1">
-                  <span className="text-3xl font-bold text-primary">{plan.price.inr}</span>
-                  <span className="text-gray-500">/ {plan.price.usd}</span>
-                </div>
-                <p className="text-sm text-gray-600">{plan.duration}</p>
-              </div>
+            // Determine if this package is “popular” (optional logic):
+            // Here, we’ll mark the first package as popular if there is more than one.
+            const popular = index === 0 && packages.length > 1;
 
-              <div className="flex-grow">
-                <ul className="space-y-3 mb-6">
-                  {plan.features.map((feature, i) => (
-                    <li key={i} className="flex items-start gap-2">
-                      <Check size={18} className="text-primary mt-0.5 shrink-0" />
-                      <span className="text-sm text-gray-600">{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              <a
-                href="#contact"
-                className={`btn w-full text-center ${
-                  plan.popular ? 'btn-primary' : 'btn-outline'
+            return (
+              <motion.div
+                key={pkg.id}
+                variants={itemVariants}
+                className={`relative card flex flex-col ${
+                  popular ? "border-2 border-primary shadow-lg" : ""
                 }`}
               >
-                Get Started
-              </a>
-            </motion.div>
-          ))}
+                {popular && (
+                  <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                    <span className="bg-primary text-white px-4 py-1 rounded-full text-sm font-medium">
+                      Most Popular
+                    </span>
+                  </div>
+                )}
+
+                {/* Icon placeholder */}
+                <div className="mb-6 text-center">
+                  <div className="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center mb-4">
+                    <Check className="text-primary" size={24} />
+                  </div>
+                  <h3 className="text-xl font-semibold mb-2">{pkg.name}</h3>
+                  <p className="text-gray-600 text-sm">
+                    {pkg.description ?? "No description provided."}
+                  </p>
+                </div>
+
+                {/* Price & Duration */}
+                <div className="mb-6 text-center">
+                  <div className="flex items-baseline justify-center gap-2 mb-1">
+                    <span className="text-3xl font-bold text-primary">
+                      {priceText}
+                    </span>
+                    <span className="text-gray-500">/ {durationText}</span>
+                  </div>
+                </div>
+
+                {/* Spacer so that “Get Started” button sits at bottom */}
+                <div className="flex-grow" />
+
+                <a
+                  href={`/signup/${pkg.slug}`}
+                  className={`btn w-full text-center ${
+                    popular ? "btn-primary" : "btn-outline"
+                  }`}
+                >
+                  Get Started
+                </a>
+              </motion.div>
+            );
+          })}
         </motion.div>
 
         <motion.div
@@ -188,9 +208,12 @@ const Pricing = () => {
           <p className="text-gray-600 mb-4">
             Need a custom solution? We've got you covered.
           </p>
-          <a href="#contact" className="btn btn-primary inline-flex items-center gap-2">
+          <a
+            href="#contact"
+            className="btn btn-primary inline-flex items-center gap-2"
+          >
             Contact Us
-            <Zap size={16} />
+            <Check size={16} />
           </a>
         </motion.div>
       </Container>
@@ -198,4 +221,4 @@ const Pricing = () => {
   );
 };
 
-export default Pricing;
+export default SubscriptionPricing;

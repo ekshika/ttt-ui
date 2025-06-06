@@ -112,3 +112,20 @@ export async function reactivateEvent(
   const resp = await api.put<Event>(`/events/${id}/reactivate`, {}, config);
   return resp.data;
 }
+
+/**
+ * Search events by any field (admin can filter by any, public gets only published)
+ * GET /api/events/search?field1=val1&field2=val2
+ * 
+ */
+export async function getEventsByField(
+  params: Record<string, string | number | boolean>,
+  token?: string
+): Promise<Event[]> {
+  const config = {
+    ...authHeaders(token),
+    params,
+  };
+  const resp = await api.get<Event[]>('/events/search', config);
+  return resp.data;
+}

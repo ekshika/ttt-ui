@@ -1,4 +1,5 @@
-// src/pages/admin/PackageManager.tsx
+// File: src/pages/admin/PackageManager.tsx
+
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../../context/AuthContext";
 import {
@@ -186,10 +187,11 @@ const PackageManager: React.FC = () => {
                     {pkg.package_type.charAt(0).toUpperCase() +
                       pkg.package_type.slice(1)}
                   </td>
-                  <td className="p-2">{pkg.price.toFixed(2)}</td>
                   <td className="p-2">
-                    {pkg.is_active ? "Yes" : "No"}
+                    {/* Coerce price into number before formatting */}
+                    {Number(pkg.price).toFixed(2)}
                   </td>
+                  <td className="p-2">{pkg.is_active ? "Yes" : "No"}</td>
                   <td className="p-2 space-x-2">
                     <Link
                       to={`/admin/packages/edit/${pkg.id}`}

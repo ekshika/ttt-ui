@@ -1,13 +1,12 @@
 import { useEffect } from 'react';
 import Particles from '../../components/ui/Particles';
 import Hero from '../../components/home/Hero';
-import About from '../../components/home/About';
 import Services from '../../components/home/ServicesList';
 import TechStack from '../../components/home/TechStack';
-import WhyUs from '../../components/home/WhyUs';
 import Pricing from '../../components/home/Pricing';
 import Contact from '../../components/home/Contact';
-import BlogDisplayPage from '../../components/home/Blog';
+import Blogs from '../../components/home/Blog';
+import Events from '../../components/home/EventList';
 
 const HomePage = () => {
   useEffect(() => {
@@ -42,11 +41,12 @@ const HomePage = () => {
         <Particles />
         <Hero />
       </div>
-      <About />
+      {/* <About /> */}
       <Services />
-      <BlogDisplayPage/>
+      <Blogs/>
+      <Events/>
       <TechStack />
-      <WhyUs />
+      {/* <WhyUs /> */}
       <Pricing />
       <Contact />
     </main>
