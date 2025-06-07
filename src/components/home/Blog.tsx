@@ -28,7 +28,7 @@ export default function BlogDisplayPage() {
 
   if (loading) {
     return (
-      <div
+      <div id="blogs" className="py-20"
         style={{
           background: "#fff",
           minHeight: "100vh",
@@ -48,7 +48,7 @@ export default function BlogDisplayPage() {
 
   if (error) {
     return (
-      <div
+      <div id="blogs" className="py-20"
         style={{
           background: "#fff",
           minHeight: "100vh",
@@ -67,7 +67,7 @@ export default function BlogDisplayPage() {
   }
 
   return (
-    <div
+    <div id="blogs" className="py-20"
       style={{
         background: "#fff",
         minHeight: "100vh",

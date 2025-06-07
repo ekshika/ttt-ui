@@ -35,7 +35,7 @@ export default function EventDisplayPage() {
   }, []);
 
   return (
-    <div
+    <div id="events" className="py-20"
       style={{
         background: "#fff",
         minHeight: "100vh",

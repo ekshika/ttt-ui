@@ -41,9 +41,9 @@ const Navbar = () => {
   const navLinks = [
     { name: 'Home', href: isHomePage ? '#home' : '/#home' },
     { name: 'Services', href: isHomePage ? '#services' : '/#services' },
-    { name: 'Tech Stack', href: isHomePage ? '#tech-stack' : '/#tech-stack' },
     { name: 'Blogs', href: isHomePage ? '#blogs' : '/#blogs' },
     { name: 'Events', href: isHomePage ? '#events' : '/#events' },
+    { name: 'Tech Stack', href: isHomePage ? '#tech-stack' : '/#tech-stack' },
     { name: 'Pricing', href: isHomePage ? '#pricing' : '/#pricing' },
     { name: 'Contact', href: isHomePage ? '#contact' : '/#contact' },
   ];

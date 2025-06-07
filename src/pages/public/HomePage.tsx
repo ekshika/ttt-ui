@@ -41,12 +41,10 @@ const HomePage = () => {
         <Particles />
         <Hero />
       </div>
-      {/* <About /> */}
       <Services />
       <Blogs/>
       <Events/>
       <TechStack />
-      {/* <WhyUs /> */}
       <Pricing />
       <Contact />
     </main>

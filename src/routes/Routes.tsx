@@ -10,6 +10,7 @@ import AdminDashboard from '../pages/admin/AdminDashboard';
 import AdminRoutes from './Admin/AdminRoutes';
 import BlogSingleView from '../pages/public/BlogDetail';
 import SingleEventPage from '../pages/public/EventDetail';
+import PackageDetailPage from '../pages/public/PackageDetail';
 
 const ScrollToTop = () => {
   const { pathname, hash } = useLocation();
@@ -35,6 +36,9 @@ const AppRoutes = () => (
 
       {/* ←── New public route for "single blog" */}
       <Route path="/event/:slug" element={<SingleEventPage />} />
+
+      {/* Package details */}
+      <Route path="/packages/:slug" element={<PackageDetailPage />} />
 
       {/* All /services/* routes → rendered by the <ServicesRoutes /> component */}
       <Route path="services/*">

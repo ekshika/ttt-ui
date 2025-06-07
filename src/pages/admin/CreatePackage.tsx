@@ -1,8 +1,9 @@
-// src/pages/admin/CreatePackage.tsx
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useAuth } from "../../context/AuthContext";
-import { createPackage } from "../../services/packageService"; // adjust to your path
+import { createPackage } from "../../services/packageService";
+import { getEventsByStatus } from "../../services/eventService";
 import { useNavigate } from "react-router-dom";
+import type { Event } from "../../types/event"; // adjust path as needed
 
 const PRIMARY = "#1f528c";
 const SECONDARY = "#3e6aa7";
@@ -13,16 +14,7 @@ const PACKAGE_TYPES = [
   { value: "event", label: "Event Ticket" },
 ];
 
-interface EventOption {
-  id: string;
-  title: string;
-}
-
-interface CreatePackageProps {
-  events?: EventOption[];
-}
-
-export default function CreatePackage({ events = [] }: CreatePackageProps) {
+export default function CreatePackage() {
   const { user, accessToken } = useAuth();
   const navigate = useNavigate();
 
@@ -41,6 +33,21 @@ export default function CreatePackage({ events = [] }: CreatePackageProps) {
     useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const [eventOptions, setEventOptions] = useState<Event[]>([]);
+  const [eventsLoading, setEventsLoading] = useState(false);
+
+  // Fetch published events for dropdown
+  useEffect(() => {
+    if (!accessToken || packageType !== "event") return;
+    setEventsLoading(true);
+    getEventsByStatus("published", accessToken)
+      .then((data) => setEventOptions(data))
+      .catch((err) => {
+        setEventOptions([]);
+        console.error("Failed to fetch events for dropdown:", err);
+      })
+      .finally(() => setEventsLoading(false));
+  }, [accessToken, packageType]);
 
   // Guard: only admins can create packages
   if (!user || user.role !== "admin") {
@@ -57,12 +64,10 @@ export default function CreatePackage({ events = [] }: CreatePackageProps) {
       setMessage("You must be logged in to create a package.");
       return;
     }
-
     setLoading(true);
     setMessage("Creating package...");
 
-    // Build payload according to your PackageInput type
-    const payload = {
+    const payload: any = {
       name: name.trim(),
       slug: slug.trim(),
       description: description.trim(),
@@ -81,12 +86,12 @@ export default function CreatePackage({ events = [] }: CreatePackageProps) {
     try {
       await createPackage(payload, accessToken);
       setMessage("Package created successfully!");
-      // Optionally navigate back to manager after a short delay:
       setTimeout(() => navigate("/admin/packages"), 1000);
     } catch (err: any) {
       console.error(err);
       setMessage(
-        err.response?.data?.error || "Error creating package. Please try again."
+        err.response?.data?.error ||
+          "Error creating package. Please try again."
       );
     } finally {
       setLoading(false);
@@ -252,6 +257,7 @@ export default function CreatePackage({ events = [] }: CreatePackageProps) {
                 value={eventId}
                 onChange={(e) => setEventId(e.target.value)}
                 required
+                disabled={eventsLoading}
                 style={{
                   width: "100%",
                   padding: 10,
@@ -262,14 +268,13 @@ export default function CreatePackage({ events = [] }: CreatePackageProps) {
                 }}
               >
                 <option value="">Select Event</option>
-                {events.map((ev) => (
+                {eventOptions.map((ev) => (
                   <option key={ev.id} value={ev.id}>
                     {ev.title}
                   </option>
                 ))}
               </select>
             </label>
-
             <label style={{ fontWeight: 500 }}>
               Capacity
               <input
@@ -288,7 +293,6 @@ export default function CreatePackage({ events = [] }: CreatePackageProps) {
                 }}
               />
             </label>
-
             <label style={{ fontWeight: 500 }}>
               Package Registration Deadline
               <input
