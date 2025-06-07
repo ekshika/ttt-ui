@@ -1,14 +1,18 @@
+// src/routes/ServicesRoutes.tsx
 import { Route } from 'react-router-dom';
-import ChatbotsPage from '../pages/ChatbotsPage';
-import AgenticWorkflowsPage from '../pages/AgenticWorkflowsPage';
-import ProcessAutomationPage from '../pages/ProcessAutomationPage';
-import AiAppsPage from '../pages/AiAppsPage';
+import ChatbotsPage from '../pages/public/services/ChatbotsPage';
+import AgenticWorkflowsPage from '../pages/public/services/AgenticWorkflowsPage';
+import ProcessAutomationPage from '../pages/public/services/ProcessAutomationPage';
+import AiAppsPage from '../pages/public/services/AiAppsPage';
+import { Fragment } from 'react/jsx-runtime';
 
-const servicesRoutes = [
-  <Route path="ai-chatbots" element={<ChatbotsPage />} key="ai-chatbots" />,
-  <Route path="agentic-ai-workflows" element={<AgenticWorkflowsPage />} key="agentic-ai-workflows" />,
-  <Route path="smart-process-automation" element={<ProcessAutomationPage />} key="smart-process-automation" />,
-  <Route path="ai-apps-micro-saas" element={<AiAppsPage />} key="ai-apps-micro-saas" />,
-];
+const ServicesRoutes = () => (
+  <Fragment>
+    <Route path="ai-chatbots" element={<ChatbotsPage />} />
+    <Route path="agentic-ai-workflows" element={<AgenticWorkflowsPage />} />
+    <Route path="smart-process-automation" element={<ProcessAutomationPage />} />
+    <Route path="ai-apps-micro-saas" element={<AiAppsPage />} />
+  </Fragment>
+);
 
-export default servicesRoutes;
+export default ServicesRoutes;
