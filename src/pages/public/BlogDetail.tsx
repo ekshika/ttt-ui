@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { searchBlogs } from "../../services/blogService"; // adjust as needed
 import { Blog } from "../../types/blog";                  // adjust as needed
@@ -6,6 +6,17 @@ import { Blog } from "../../types/blog";                  // adjust as needed
 const PRIMARY = "#1f528c";
 const SECONDARY = "#3e6aa7";
 const FONT_FAMILY = "'Inter', 'Roboto', sans-serif";
+
+// Utility: check if a filename or CID looks like a video
+function isVideo(cidOrFilename?: string): boolean {
+  if (!cidOrFilename) return false;
+  // crude check for .mp4, .webm, .ogg
+  return (
+    cidOrFilename.endsWith(".mp4") ||
+    cidOrFilename.endsWith(".webm") ||
+    cidOrFilename.endsWith(".ogg")
+  );
+}
 
 function NotFoundFallback() {
   return (
@@ -105,8 +116,8 @@ export default function BlogSingleView() {
           flex: 1,
           display: "flex",
           flexDirection: "column",
-          justifyContent: "center", // vertical centering if possible
-          alignItems: "center",     // horizontal centering
+          justifyContent: "center",
+          alignItems: "center",
           padding: "36px 8px 24px 8px",
         }}
       >
@@ -142,16 +153,31 @@ export default function BlogSingleView() {
 
           {/* Media */}
           {blog.media_cid && (
-            <img
-              src={blog.media_cid}
-              alt={blog.title}
-              style={{
-                width: "100%",
-                height: 300,
-                objectFit: "cover",
-              }}
-              loading="lazy"
-            />
+            <div style={{ width: "100%", height: 300, background: "#f8f9fa", display: "flex", alignItems: "center", justifyContent: "center" }}>
+              {isVideo(blog.media_cid) ? (
+                <video
+                  src={`https://w3s.link/ipfs/${blog.media_cid}`}
+                  style={{
+                    width: "100%",
+                    height: 300,
+                    objectFit: "cover",
+                  }}
+                  controls
+                  preload="none"
+                />
+              ) : (
+                <img
+                  src={`https://w3s.link/ipfs/${blog.media_cid}`}
+                  alt={blog.title}
+                  style={{
+                    width: "100%",
+                    height: 300,
+                    objectFit: "cover",
+                  }}
+                  loading="lazy"
+                />
+              )}
+            </div>
           )}
 
           <div
