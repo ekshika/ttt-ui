@@ -65,10 +65,10 @@
     @apply text-primary;
   }
   
-  .nav-link.active::after {
-    content: '';
-    @apply absolute -bottom-1 left-0 w-full h-0.5 bg-primary rounded-full transform origin-left transition-transform duration-300;
-  }
+ .nav-link.active::after {
+  @apply absolute bottom-0 left-0 w-full h-0.5 bg-primary;
+  content: '';
+}
   
   .section-title {
     @apply mb-4 text-center font-display;

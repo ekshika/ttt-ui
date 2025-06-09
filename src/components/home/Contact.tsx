@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { Send, Mail, Phone, MapPin } from 'lucide-react';
 import Container from '../ui/Container';
@@ -31,22 +31,22 @@ const Contact = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-  
+
     try {
       await createContact({
         name: formData.name,
         email: formData.email,
-        country_code: '', // empty for now
-        phone_number: '', // empty for now
+        country_code: '',
+        phone_number: '',
         message: formData.message,
         subject: formData.service,
       });
       setIsSubmitted(true);
       setFormData({ name: '', email: '', service: '', message: '' });
       setTimeout(() => setIsSubmitted(false), 5000);
-      toast.success('Message sent!');
+      toast.success('Message sent successfully!');
     } catch (err: any) {
-      toast.error(err.response?.data?.message || 'Submission failed');
+      toast.error(err.response?.data?.message || 'Failed to send message');
     } finally {
       setIsSubmitting(false);
     }
@@ -54,169 +54,236 @@ const Contact = () => {
 
   const contactInfo = [
     {
-      icon: <Mail size={20} />,
-      title: "Email",
-      value: "hello@teenytechtrek.com",
+      icon: <Mail size={20} className="text-blue-500" />,
+      title: 'Email',
+      value: 'hello@teenytechtrek.com',
+      href: 'mailto:hello@teenytechtrek.com',
     },
     {
-      icon: <Phone size={20} />,
-      title: "Phone",
-      value: "+1 (555) 123-4567",
+      icon: <Phone size={20} className="text-blue-500" />,
+      title: 'Phone',
+      value: '+1 (555) 123-4567',
+      href: 'tel:+15551234567',
     },
     {
-      icon: <MapPin size={20} />,
-      title: "Location",
-      value: "San Francisco, CA",
+      icon: <MapPin size={20} className="text-blue-500" />,
+      title: 'Location',
+      value: 'San Francisco, CA',
     },
   ];
 
   const services = [
-    "AI-Powered Chatbots",
-    "Agentic AI Workflows",
-    "Smart Process Automation",
-    "AI Apps & Micro-SaaS Tools",
-    "Other / Consulting",
+    'AI-Powered Chatbots',
+    'Agentic AI Workflows',
+    'Smart Process Automation',
+    'AI Apps & Micro-SaaS Tools',
+    'Other / Consulting',
+  ];
+
+  const socialLinks = [
+    { platform: 'Twitter', icon: '𝕏', href: '#', ariaLabel: 'Visit our Twitter page' },
+    { platform: 'LinkedIn', icon: 'in', href: '#', ariaLabel: 'Visit our LinkedIn page' },
+    { platform: 'GitHub', icon: 'GH', href: '#', ariaLabel: 'Visit our GitHub page' },
   ];
 
   const containerVariants = {
-    hidden: { opacity: 0 },
+    hidden: { opacity: 0, y: 20 },
     visible: {
       opacity: 1,
+      y: 0,
       transition: {
-        duration: 0.5,
+        duration: 0.6,
+        staggerChildren: 0.2,
       },
     },
   };
 
+  const itemVariants = {
+    hidden: { opacity: 0, x: -20 },
+    visible: { opacity: 1, x: 0, transition: { duration: 0.5 } },
+  };
+
   return (
-    <section id="contact" className="py-20 bg-primary-100">
-      <Container>
+    <section id="contact" className="py-24 bg-gradient-to-b from-gray-50 to-white relative overflow-hidden">
+      {/* Subtle background pattern */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(0,0,0,0.05)_1px,transparent_0)] bg-[size:40px_40px] opacity-20" />
+
+      <Container className="relative z-10">
         <SectionHeading
-          title="Get in Touch"
-          subtitle="Ready to harness the power of AI for your business? Let's chat about your project."
+          title="Let's Connect"
+          subtitle="Ready to transform your business with AI? Reach out to discuss your project."
+        
         />
 
         <motion.div
           ref={ref}
           initial="hidden"
-          animate={inView ? "visible" : "hidden"}
+          animate={inView ? 'visible' : 'hidden'}
           variants={containerVariants}
-          className="grid grid-cols-1 lg:grid-cols-5 gap-12 mt-12"
+          className="grid grid-cols-1 lg:grid-cols-5 gap-8 mt-16"
         >
-          <div className="lg:col-span-2 order-2 lg:order-1">
-            <div className="bg-white p-8 rounded-xl shadow-md h-full">
-              <h3 className="text-xl font-semibold mb-6 text-primary">Contact Information</h3>
-              
-              <div className="space-y-6 mb-8">
+          {/* Contact Info Section */}
+          <motion.div variants={itemVariants} className="lg:col-span-2 order-2 lg:order-1">
+            <div className="bg-white p-8 rounded-2xl shadow-lg h-full border border-gray-100">
+              <h3 className="text-2xl font-semibold mb-8 text-gray-900 tracking-tight">
+                Contact Information
+              </h3>
+              <div className="space-y-6 mb-10">
                 {contactInfo.map((item, index) => (
-                  <div key={index} className="flex items-start gap-4">
-                    <div className="w-10 h-10 flex items-center justify-center bg-primary-100 rounded-full shrink-0">
+                  <div key={index} className="flex items-start gap-4 group">
+                    <div className="w-12 h-12 flex items-center justify-center bg-blue-50 rounded-full shrink-0 group-hover:bg-blue-100 transition-colors duration-300">
                       {item.icon}
                     </div>
                     <div>
-                      <p className="text-sm text-gray-500">{item.title}</p>
-                      <p className="font-medium">{item.value}</p>
+                      <p className="text-sm text-gray-500 font-medium">{item.title}</p>
+                      {item.href ? (
+                        <a
+                          href={item.href}
+                          className="text-gray-900 font-semibold hover:text-blue-500 transition-colors duration-300"
+                        >
+                          {item.value}
+                        </a>
+                      ) : (
+                        <p className="text-gray-900 font-semibold">{item.value}</p>
+                      )}
                     </div>
                   </div>
                 ))}
               </div>
-              
-              <div className="pt-6 border-t border-gray-200">
-                <h4 className="text-lg font-medium mb-4">Follow Us</h4>
-                <div className="flex gap-4">
-                  {['Twitter', 'LinkedIn', 'GitHub'].map((platform, index) => (
+              <div className="pt-8 border-t border-gray-100">
+                <h4 className="text-lg font-semibold mb-4 text-gray-900">Follow Us</h4>
+                <div className="flex gap-3">
+                  {socialLinks.map((link, index) => (
                     <a
                       key={index}
-                      href="#"
-                      className="w-10 h-10 flex items-center justify-center bg-primary-100 rounded-full hover:bg-primary/10 transition-colors duration-300"
+                      href={link.href}
+                      aria-label={link.ariaLabel}
+                      className="w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-blue-100 hover:text-blue-500 transition-all duration-300 transform hover:scale-105"
                     >
-                      {platform[0]}
+                      <span className="text-sm font-medium">{link.icon}</span>
                     </a>
                   ))}
                 </div>
               </div>
             </div>
-          </div>
-          
-          <div className="lg:col-span-3 order-1 lg:order-2">
-            <div className="bg-white p-8 rounded-xl shadow-md">
-              <h3 className="text-xl font-semibold mb-6 text-primary">Send us a Message</h3>
-              
-              {isSubmitted ? (
-                <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
-                  <strong className="font-bold">Success!</strong>
-                  <span className="block sm:inline"> Your message has been sent. We'll get back to you soon.</span>
-                </div>
-              ) : (
-                <form onSubmit={handleSubmit}>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                    <div>
-                      <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
-                        Full Name
-                      </label>
-                      <input
-                        type="text"
-                        id="name"
-                        name="name"
-                        value={formData.name}
-                        onChange={handleChange}
-                        required
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
-                        placeholder="John Doe"
-                      />
-                    </div>
-                    <div>
-                      <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                        Email Address
-                      </label>
-                      <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        required
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
-                        placeholder="john@example.com"
-                      />
-                    </div>
-                  </div>
-                  
-                  <div className="mb-6">
-                    <label htmlFor="service" className="block text-sm font-medium text-gray-700 mb-2">
-                      Service Interested In
-                    </label>
-                    <select
-                      id="service"
-                      name="service"
-                      value={formData.service}
-                      onChange={handleChange}
-                      required
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
+          </motion.div>
+
+          {/* Contact Form Section */}
+          <motion.div variants={itemVariants} className="lg:col-span-3 order-1 lg:order-2">
+            <div className="bg-white p-8 rounded-2xl shadow-lg border border-gray-100">
+              <h3 className="text-2xl font-semibold mb-8 text-gray-900 tracking-tight">
+                Send Us a Message
+              </h3>
+              <AnimatePresence>
+                {isSubmitted ? (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    className="bg-green-50 border border-green-200 text-green-800 p-4 rounded-lg flex items-center gap-3"
+                    role="alert"
+                  >
+                    <svg
+                      className="w-5 h-5 text-green-600"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
                     >
-                      <option value="" disabled>Select a service</option>
-                      {services.map((service, index) => (
-                        <option key={index} value={service}>{service}</option>
-                      ))}
-                    </select>
-                  </div>
-                  
-                  <div className="mb-6">
-                    <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">
-                      Your Message
-                    </label>
-                    <textarea
-                      id="message"
-                      name="message"
-                      value={formData.message}
-                      onChange={handleChange}
-                      required
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary min-h-[120px]"
-                      placeholder="Tell us about your project or needs..."
-                    ></textarea>
-                  </div>
-                  
-                  <button
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M5 13l4 4L19 7"
+                      />
+                    </svg>
+                    <div>
+                      <strong className="font-semibold">Success!</strong>
+                      <span className="block text-sm">Your message has been sent. We'll respond soon.</span>
+                    </div>
+                  </motion.div>
+                ) : (
+                  <form onSubmit={handleSubmit}>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                      <div>
+                        <label
+                          htmlFor="name"
+                          className="block text-sm font-medium text-gray-700 mb-2"
+                        >
+                          Full Name
+                        </label>
+                        <input
+                          type="text"
+                          id="name"
+                          name="name"
+                          value={formData.name}
+                          onChange={handleChange}
+                          required
+                          className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300 bg-gray-50"
+                          placeholder="John Doe"
+                        />
+                      </div>
+                      <div>
+                        <label
+                          htmlFor="email"
+                          className="block text-sm font-medium text-gray-700 mb-2"
+                        >
+                          Email Address
+                        </label>
+                        <input
+                          type="email"
+                          id="email"
+                          name="email"
+                          value={formData.email}
+                          onChange={handleChange}
+                          required
+                          className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300 bg-gray-50"
+                          placeholder="john@example.com"
+                        />
+                      </div>
+                    </div>
+                    <div className="mb-6">
+                      <label
+                        htmlFor="service"
+                        className="block text-sm font-medium text-gray-700 mb-2"
+                      >
+                        Service Interested In
+                      </label>
+                      <select
+                        id="service"
+                        name="service"
+                        value={formData.service}
+                        onChange={handleChange}
+                        required
+                        className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300 bg-gray-50 appearance-none"
+                      >
+                        <option value="" disabled>
+                          Select a service
+                        </option>
+                        {services.map((service, index) => (
+                          <option key={index} value={service}>
+                            {service}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    <div className="mb-6">
+                      <label
+                        htmlFor="message"
+                        className="block text-sm font-medium text-gray-700 mb-2"
+                      >
+                        Your Message
+                      </label>
+                      <textarea
+                        id="message"
+                        name="message"
+                        value={formData.message}
+                        onChange={handleChange}
+                        required
+                        className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300 bg-gray-50 min-h-[140px]"
+                        placeholder="Tell us about your project or needs..."
+                      />
+                    </div>
+                     <button
                     type="submit"
                     disabled={isSubmitting}
                     className={`btn btn-primary w-full flex items-center justify-center gap-2 ${isSubmitting ? 'opacity-70 cursor-not-allowed' : ''}`}
@@ -235,10 +302,11 @@ const Contact = () => {
                       </>
                     )}
                   </button>
-                </form>
-              )}
+                  </form>
+                )}
+              </AnimatePresence>
             </div>
-          </div>
+          </motion.div>
         </motion.div>
       </Container>
     </section>
