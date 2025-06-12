@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { motion } from "framer-motion";
 import { toast } from "react-hot-toast";
 import { Eye, EyeOff, Lock, Mail, User } from "lucide-react";
 import { useNavigate } from "react-router-dom";
@@ -46,7 +47,7 @@ const AuthPage: React.FC = () => {
           return;
         }
 
-        await registerUser( form.username, form.email, form.password);
+        await registerUser(form.username, form.email, form.password);
 
         toast.success("Account created. Please log in.");
         setIsLogin(true);
@@ -59,17 +60,37 @@ const AuthPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-primary to-secondary flex items-center justify-center p-4">
-      <div className="bg-white rounded-2xl shadow-xl w-full max-w-md p-8">
+    <div
+      className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden"
+      style={{
+        background: "linear-gradient(135deg, #1f528c 0%, #3e6aa7 50%, #1f528c 100%)",
+        backgroundSize: "200% 200%", // For subtle animation
+        animation: "gradientShift 15s ease infinite",
+      }}
+    >
+      {/* Subtle tech pattern overlay */}
+      <div
+        className="absolute inset-0 opacity-10"
+        style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23FFFFFF' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+        }}
+      ></div>
+
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        className="bg-white rounded-2xl shadow-2xl w-full max-w-md p-10 relative z-10"
+      >
         <div className="text-center mb-8">
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">
             {isForgot
               ? "Forgot Password"
               : isLogin
               ? "Welcome Back!"
               : "Create Account"}
           </h1>
-          <p className="text-gray-600">
+          <p className="text-gray-600 text-sm">
             {isForgot
               ? "Enter your username to reset password"
               : isLogin
@@ -94,7 +115,7 @@ const AuthPage: React.FC = () => {
                 value={form.username}
                 onChange={handleChange}
                 required
-                className="pl-10 w-full px-4 py-2 border border-gray-300 rounded-md"
+                className="pl-10 w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
                 placeholder="your_username"
               />
             </div>
@@ -116,7 +137,7 @@ const AuthPage: React.FC = () => {
                   value={form.email}
                   onChange={handleChange}
                   required
-                  className="pl-10 w-full px-4 py-2 border border-gray-300 rounded-md"
+                  className="pl-10 w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
                   placeholder="you@example.com"
                 />
               </div>
@@ -139,20 +160,22 @@ const AuthPage: React.FC = () => {
                   value={form.password}
                   onChange={handleChange}
                   required
-                  className="pl-10 w-full px-4 py-2 border border-gray-300 rounded-md"
+                  className="pl-10 w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
                   placeholder="••••••••"
                 />
-                <button
+                <motion.button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                  whileHover={{ scale: 1.1 }}
+                  transition={{ duration: 0.2 }}
                 >
                   {showPassword ? (
                     <EyeOff className="h-5 w-5" />
                   ) : (
                     <Eye className="h-5 w-5" />
                   )}
-                </button>
+                </motion.button>
               </div>
             </div>
           )}
@@ -173,17 +196,20 @@ const AuthPage: React.FC = () => {
                   value={form.confirmPassword}
                   onChange={handleChange}
                   required
-                  className="pl-10 w-full px-4 py-2 border border-gray-300 rounded-md"
+                  className="pl-10 w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
                   placeholder="••••••••"
                 />
               </div>
             </div>
           )}
 
-          <button
+          <motion.button
             type="submit"
             disabled={loading}
-            className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition"
+            className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition font-medium text-base shadow-md disabled:opacity-50"
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            transition={{ duration: 0.2 }}
           >
             {loading
               ? "Processing..."
@@ -192,60 +218,77 @@ const AuthPage: React.FC = () => {
               : isLogin
               ? "Log In"
               : "Sign Up"}
-          </button>
-          <GoogleLogin
-            onSuccess={async (credentialResponse: CredentialResponse) => {
-              if (credentialResponse.credential) {
-                try {
-                  const res = await googleLogin(credentialResponse.credential);
-                  const token = res.data.accessToken;
-                  login(token);
-                  toast.success("Google login successful");
-                  navigate("/");
-                } catch (err: any) {
-                  toast.error(
-                    err.response?.data?.error || "Google login failed"
-                  );
+          </motion.button>
+          <div className="flex justify-center">
+            <GoogleLogin
+              onSuccess={async (credentialResponse: CredentialResponse) => {
+                if (credentialResponse.credential) {
+                  try {
+                    const res = await googleLogin(credentialResponse.credential);
+                    const token = res.data.accessToken;
+                    login(token);
+                    toast.success("Google login successful");
+                    navigate("/");
+                  } catch (err: any) {
+                    toast.error(
+                      err.response?.data?.error || "Google login failed"
+                    );
+                  }
                 }
-              }
-            }}
-            onError={() => {
-              toast.error("Google login failed");
-            }}
-            useOneTap
-          />
+              }}
+              onError={() => {
+                toast.error("Google login failed");
+              }}
+              useOneTap
+            />
+          </div>
         </form>
 
-        <div className="mt-6 text-center text-sm text-gray-600 space-y-2">
+        <div className="mt-8 text-center text-sm text-gray-600 space-y-3">
           {!isForgot && (
-            <button
+            <motion.button
               onClick={() => setIsForgot(true)}
-              className="text-blue-600 hover:underline"
+              className="text-blue-600 hover:underline font-medium"
+              whileHover={{ scale: 1.05 }}
+              transition={{ duration: 0.2 }}
             >
               Forgot password?
-            </button>
+            </motion.button>
           )}
 
           {isForgot ? (
-            <button
+            <motion.button
               onClick={() => setIsForgot(false)}
-              className="text-blue-600 hover:underline block"
+              className="text-blue-600 hover:underline block font-medium"
+              whileHover={{ scale: 1.05 }}
+              transition={{ duration: 0.2 }}
             >
               Back to Login
-            </button>
+            </motion.button>
           ) : (
             <p>
               {isLogin ? "Don't have an account?" : "Already have an account?"}{" "}
-              <button
+              <motion.button
                 onClick={() => setIsLogin(!isLogin)}
                 className="text-blue-600 hover:underline font-medium"
+                whileHover={{ scale: 1.05 }}
+                transition={{ duration: 0.2 }}
               >
                 {isLogin ? "Sign up" : "Log in"}
-              </button>
+              </motion.button>
             </p>
           )}
         </div>
-      </div>
+      </motion.div>
+
+      {/* Inline CSS for background animation */}
+      <style>{`
+        @keyframes gradientShift {
+          0% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+          100% { background-position: 0% 50%; }
+        }
+      `}</style>
     </div>
   );
 };

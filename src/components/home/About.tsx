@@ -103,10 +103,10 @@ const About = () => {
             <div className="lg:col-span-2">
               <div className="relative">
                 <div className="aspect-square bg-primary-100 rounded-xl flex items-center justify-center">
-                  <img 
-                    src="/logo.svg" 
-                    alt="Teeny Tech Trek Logo" 
-                    className="w-3/4 h-3/4 animate-pulse-slow"
+                 <img
+                    src="/mission.svg"
+                    alt="AI Neural Network"
+                    className="w-5/6 h-5/6 object-contain animate-pulse-slow"
                   />
                 </div>
                 <div className="absolute -bottom-4 -right-4 bg-primary text-white py-2 px-4 rounded-lg text-sm font-medium">

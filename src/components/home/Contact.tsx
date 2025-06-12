@@ -6,6 +6,7 @@ import Container from '../ui/Container';
 import SectionHeading from '../ui/SectionHeading';
 import { createContact } from '../../services/contactService';
 import { toast } from 'react-hot-toast';
+import { FaInstagram, FaLinkedinIn } from 'react-icons/fa';
 
 const Contact = () => {
   const [ref, inView] = useInView({
@@ -52,25 +53,27 @@ const Contact = () => {
     }
   };
 
-  const contactInfo = [
-    {
-      icon: <Mail size={20} className="text-blue-500" />,
-      title: 'Email',
-      value: 'hello@teenytechtrek.com',
-      href: 'mailto:hello@teenytechtrek.com',
-    },
-    {
-      icon: <Phone size={20} className="text-blue-500" />,
-      title: 'Phone',
-      value: '+1 (555) 123-4567',
-      href: 'tel:+15551234567',
-    },
-    {
-      icon: <MapPin size={20} className="text-blue-500" />,
-      title: 'Location',
-      value: 'San Francisco, CA',
-    },
-  ];
+ const contactInfo = [
+  {
+    icon: <Mail size={20} className="text-blue-500" />,
+    title: 'Email',
+    value: 'anisha.singla@teenytechtrek.com',
+    href: 'mailto:anisha.singla@teenytechtrek.com',
+  },
+  {
+    icon: <Phone size={20} className="text-blue-500" />,
+    title: 'Phone',
+    value: '+1 647-864-5465, +91 98558 06696',
+    href: 'tel:+16478645465', // You may consider only linking to one number
+  },
+  {
+    icon: <MapPin size={20} className="text-blue-500" />,
+    title: 'Location',
+    value: `C-201, 2nd Floor, Sebiz Square Building,
+Plot No. C-6, Sector-67, Mohali, SAS Nagar - 160062, Punjab, India`,
+  },
+];
+
 
   const services = [
     'AI-Powered Chatbots',
@@ -80,12 +83,21 @@ const Contact = () => {
     'Other / Consulting',
   ];
 
-  const socialLinks = [
-    { platform: 'Twitter', icon: '𝕏', href: '#', ariaLabel: 'Visit our Twitter page' },
-    { platform: 'LinkedIn', icon: 'in', href: '#', ariaLabel: 'Visit our LinkedIn page' },
-    { platform: 'GitHub', icon: 'GH', href: '#', ariaLabel: 'Visit our GitHub page' },
+const socialLinks = [
+    {
+      platform: 'Instagram',
+      icon: <FaInstagram />,
+      href: 'https://www.instagram.com/teenytechtrek?igsh=cng0djJjbjN1dzFo&utm_source=qr',
+      ariaLabel: 'Visit our Instagram page',
+    },
+    {
+      platform: 'LinkedIn',
+      icon: <FaLinkedinIn />,
+      href: 'https://www.linkedin.com/company/teenytechtrek/',
+      ariaLabel: 'Visit our LinkedIn page',
+    },
   ];
-
+  
   const containerVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: {

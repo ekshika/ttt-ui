@@ -1,10 +1,30 @@
 import { useEffect, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { getPublicBlogs } from "../../services/blogService"; // Adjust this path if needed
 import type { Blog } from "../../types/blog"; // Adjust this path if needed
 
 const PRIMARY = "#1f528c";
 const SECONDARY = "#3e6aa7";
 const FONT_FAMILY = "'Inter', 'Roboto', sans-serif";
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.15, delayChildren: 0.2 },
+  },
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+  hover: {
+    y: -5,
+    scale: 1.02,
+    boxShadow: "0 6px 20px rgba(31,82,140,0.15)",
+    transition: { duration: 0.2 },
+  },
+};
 
 export default function BlogDisplayPage() {
   const [blogs, setBlogs] = useState<Blog[]>([]);
@@ -28,12 +48,13 @@ export default function BlogDisplayPage() {
 
   if (loading) {
     return (
-      <div id="blogs" className="py-20"
+      <div
+        id="blogs"
+        className="py-20"
         style={{
           background: "#fff",
           minHeight: "100vh",
           fontFamily: FONT_FAMILY,
-          padding: "40px 0",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
@@ -41,19 +62,26 @@ export default function BlogDisplayPage() {
           fontSize: 18,
         }}
       >
-        Loading blogs…
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          Loading blogs…
+        </motion.div>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div id="blogs" className="py-20"
+      <div
+        id="blogs"
+        className="py-20"
         style={{
           background: "#fff",
           minHeight: "100vh",
           fontFamily: FONT_FAMILY,
-          padding: "40px 0",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
@@ -61,165 +89,183 @@ export default function BlogDisplayPage() {
           fontSize: 18,
         }}
       >
-        {error}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          {error}
+        </motion.div>
       </div>
     );
   }
 
   return (
-    <div id="blogs" className="py-20"
+    <div
+      id="blogs"
+      className="py-20"
       style={{
         background: "#fff",
         minHeight: "100vh",
         fontFamily: FONT_FAMILY,
-        padding: "0 0 60px 0",
+        padding: "0 0 80px 0",
       }}
     >
       <div
         style={{
-          maxWidth: 1100,
+          maxWidth: 1200, // Slightly wider for better content spread
           margin: "0 auto",
-          padding: "0 16px",
+          padding: "0 24px", // Increased padding for better spacing
         }}
       >
-        <h2
+        <motion.h2
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
           style={{
             color: PRIMARY,
             fontFamily: FONT_FAMILY,
             fontWeight: 800,
-            fontSize: 38,
-            marginBottom: 18,
+            fontSize: 42, // Slightly larger for emphasis
+            marginBottom: 24,
             textAlign: "center",
             letterSpacing: "-1px",
-            padding: "60px 0 30px 0", // Top/Bottom padding like your tech stack
-            background: "#fff",
+            padding: "80px 0 40px 0", // Increased top padding for balance
           }}
         >
           Blog Articles
-        </h2>
+        </motion.h2>
 
         {blogs.length === 0 && (
-          <div style={{ color: "#888", fontSize: 18, textAlign: "center" }}>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
+            style={{ color: "#888", fontSize: 18, textAlign: "center", padding: "40px 0" }}
+          >
             No blogs published yet.
-          </div>
+          </motion.div>
         )}
 
-        <div
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
-            gap: 32,
+            gridTemplateColumns: "repeat(auto-fit, minmax(340px, 1fr))", // Slightly wider cards
+            gap: 40, // Increased gap for better spacing
           }}
         >
-          {blogs.map((blog) => (
-            <a
-              key={blog.id}
-              href={`/blog/${blog.slug || blog.id}`}
-              style={{
-                textDecoration: "none",
-                color: "inherit",
-                borderRadius: 16,
-                boxShadow:
-                  "0 2px 12px rgba(62,106,167,0.09), 0 1.5px 6px rgba(31,82,140,0.08)",
-                background: "#fff",
-                transition: "transform 0.12s, box-shadow 0.12s",
-                display: "flex",
-                flexDirection: "column",
-                minHeight: 320,
-                cursor: "pointer",
-                position: "relative",
-                overflow: "hidden",
-              }}
-              tabIndex={0}
-              aria-label={blog.title}
-            >
-              {blog.media_cid && (
-                <img
-                  src={blog.media_cid}
-                  alt={blog.title}
-                  style={{
-                    width: "100%",
-                    height: 180,
-                    objectFit: "cover",
-                    borderTopLeftRadius: 16,
-                    borderTopRightRadius: 16,
-                  }}
-                  loading="lazy"
-                />
-              )}
-              <div
+          <AnimatePresence>
+            {blogs.map((blog) => (
+              <motion.a
+                key={blog.id}
+                href={`/blog/${blog.slug || blog.id}`}
+                variants={cardVariants}
+                initial="hidden"
+                animate="visible"
+                whileHover="hover"
                 style={{
-                  flex: 1,
-                  padding: 22,
+                  textDecoration: "none",
+                  color: "inherit",
+                  borderRadius: 20, // Softer corners
+                  boxShadow:
+                    "0 4px 16px rgba(62,106,167,0.1), 0 2px 8px rgba(31,82,140,0.08)", // Softer shadow
+                  background: "#fff",
                   display: "flex",
                   flexDirection: "column",
+                  minHeight: 360, // Slightly taller for balance
+                  cursor: "pointer",
+                  position: "relative",
+                  overflow: "hidden",
                 }}
+                tabIndex={0}
+                aria-label={blog.title}
               >
-                <h3
-                  style={{
-                    color: PRIMARY,
-                    fontFamily: FONT_FAMILY,
-                    fontWeight: 700,
-                    fontSize: 20,
-                    margin: 0,
-                    marginBottom: 10,
-                  }}
-                >
-                  {blog.title}
-                </h3>
+                {blog.media_cid && (
+                  <img
+                    src={blog.media_cid}
+                    alt={blog.title}
+                    style={{
+                      width: "100%",
+                      height: 200, // Taller image for better visual impact
+                      objectFit: "cover",
+                      borderTopLeftRadius: 20,
+                      borderTopRightRadius: 20,
+                    }}
+                    loading="lazy"
+                  />
+                )}
                 <div
                   style={{
-                    color: "#555",
-                    fontWeight: 400,
-                    fontSize: 15,
-                    marginBottom: 10,
-                    minHeight: 36,
-                    lineHeight: "1.35",
-                  }}
-                >
-                  {blog.content?.slice(0, 110) ?? ""}
-                  {blog.content && blog.content.length > 110 && "..."}
-                </div>
-                {/* <div
-                  style={{
-                    marginTop: "auto",
+                    flex: 1,
+                    padding: 28, // Increased padding for spacious feel
                     display: "flex",
-                    alignItems: "center",
+                    flexDirection: "column",
+                    gap: 12, // Consistent spacing
                   }}
                 >
-                  <span
-                    style={{ color: SECONDARY, fontWeight: 600, fontSize: 15 }}
+                  <h3
+                    style={{
+                      color: PRIMARY,
+                      fontFamily: FONT_FAMILY,
+                      fontWeight: 700,
+                      fontSize: 22, // Slightly larger for hierarchy
+                      margin: 0,
+                    }}
                   >
-                    {blog.author_id}
-                  </span>
-                  <span style={{ margin: "0 7px", color: "#aaa" }}>•</span>
-                  <span style={{ color: "#888", fontSize: 13 }}>
-                    {blog.published_at
-                      ? new Date(blog.published_at).toLocaleDateString()
-                      : ""}
-                  </span>
-                </div> */}
-              </div>
-              <div
-                style={{
-                  height: 4,
-                  background: `linear-gradient(90deg, ${PRIMARY}, ${SECONDARY})`,
-                  borderBottomLeftRadius: 16,
-                  borderBottomRightRadius: 16,
-                  width: "100%",
-                }}
-              />
-              <style>
-                {`
-                  a:hover, a:focus {
-                    transform: translateY(-5px) scale(1.017);
-                    box-shadow: 0 4px 18px rgba(31,82,140,0.12);
-                  }
-                `}
-              </style>
-            </a>
-          ))}
-        </div>
+                    {blog.title}
+                  </h3>
+                  <div
+                    style={{
+                      color: "#555",
+                      fontWeight: 400,
+                      fontSize: 16, // Slightly larger for readability
+                      lineHeight: "1.5", // Improved line height
+                      flex: 1,
+                    }}
+                  >
+                    {blog.content?.slice(0, 120) ?? ""}
+                    {blog.content && blog.content.length > 120 && "..."}
+                  </div>
+                  {/* Uncomment if author and date are needed */}
+                  {/* <div
+                    style={{
+                      marginTop: "auto",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 8,
+                    }}
+                  >
+                    <span style={{ color: SECONDARY, fontWeight: 600, fontSize: 15 }}>
+                      {blog.author_id}
+                    </span>
+                    <span style={{ color: "#aaa" }}>•</span>
+                    <span style={{ color: "#888", fontSize: 14 }}>
+                      {blog.published_at
+                        ? new Date(blog.published_at).toLocaleDateString("en-US", {
+                            month: "short",
+                            day: "numeric",
+                            year: "numeric",
+                          })
+                        : ""}
+                    </span>
+                  </div> */}
+                </div>
+                <div
+                  style={{
+                    height: 4,
+                    background: `linear-gradient(90deg, ${PRIMARY}, ${SECONDARY})`,
+                    borderBottomLeftRadius: 20,
+                    borderBottomRightRadius: 20,
+                    width: "100%",
+                  }}
+                />
+              </motion.a>
+            ))}
+          </AnimatePresence>
+        </motion.div>
       </div>
     </div>
   );

@@ -8,7 +8,7 @@ import { Service } from '../../types/service';
 import { services } from '../../data/services';
 
 interface ServiceDetailProps {
-  serviceId: string; // or serviceSlug if you're passing the slug
+  serviceId: string;
 }
 
 const ServiceDetail = ({ serviceId }: ServiceDetailProps) => {
@@ -21,8 +21,6 @@ const ServiceDetail = ({ serviceId }: ServiceDetailProps) => {
   useEffect(() => {
     const foundService = services.find(s => s.slug === serviceId);
     setService(foundService || null);
-    
-    // Scroll to top when service changes
     window.scrollTo(0, 0);
   }, [serviceId]);
 
@@ -33,9 +31,9 @@ const ServiceDetail = ({ serviceId }: ServiceDetailProps) => {
           <div className="text-center">
             <h2 className="text-2xl font-semibold mb-4">Service not found</h2>
             <p className="mb-6">The service you're looking for doesn't exist or has been moved.</p>
-            <a href="/" className="btn btn-primary">
+            <Link to="/" className="btn btn-primary">
               Back to Services
-            </a>
+            </Link>
           </div>
         </Container>
       </section>
@@ -179,9 +177,9 @@ const ServiceDetail = ({ serviceId }: ServiceDetailProps) => {
           <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
             Contact us today to discuss how our {service.title} can help your business grow.
           </p>
-          <a href="#contact" className="btn btn-primary inline-flex items-center gap-2">
+          <Link to="#contact" className="btn btn-primary inline-flex items-center gap-2">
             Discuss Your Project
-          </a>
+          </Link>
         </motion.div>
       </Container>
     </section>

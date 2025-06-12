@@ -12,14 +12,12 @@ export interface FaqItem {
 
 export interface Service {
   slug: string;
-  icon: ReactNode;
   title: string;
   description: string;
+  icon: ReactNode;
   features: string[];
-  featureDescriptions?: string[];
   longDescription?: string;
   benefits?: string[];
-  caseStudies?: CaseStudy[];
-  faq?: FaqItem[];
-  detailedContent?: string;
+  caseStudies?: { title: string; description: string }[];
+  faq?: { question: string; answer: string }[];
 }

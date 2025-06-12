@@ -1,6 +1,7 @@
 import { useLocation } from 'react-router-dom';
 import { ArrowUp, Mail, Phone, MapPin } from 'lucide-react';
 import Container from '../ui/Container';
+import { FaInstagram, FaLinkedinIn } from 'react-icons/fa';
 
 const Footer = () => {
   const location = useLocation();
@@ -12,15 +13,23 @@ const Footer = () => {
     });
   };
 
-  // Hide footer on admin or login routes
   if (location.pathname.startsWith('/admin') || location.pathname.startsWith('/login')) {
     return null;
   }
 
   const socialLinks = [
-    { platform: 'Twitter', icon: '𝕏', href: '#', ariaLabel: 'Visit our Twitter page' },
-    { platform: 'LinkedIn', icon: 'in', href: '#', ariaLabel: 'Visit our LinkedIn page' },
-    { platform: 'GitHub', icon: 'GH', href: '#', ariaLabel: 'Visit our GitHub page' },
+    {
+      platform: 'Instagram',
+      icon: <FaInstagram />,
+      href: 'https://www.instagram.com/teenytechtrek?igsh=cng0djJjbjN1dzFo&utm_source=qr',
+      ariaLabel: 'Visit our Instagram page',
+    },
+    {
+      platform: 'LinkedIn',
+      icon: <FaLinkedinIn />,
+      href: 'https://www.linkedin.com/company/teenytechtrek/',
+      ariaLabel: 'Visit our LinkedIn page',
+    },
   ];
 
   const serviceLinks = [
@@ -40,10 +49,8 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="relative bg-gradient-to-b from-gray-900 to-black text-white pt-20 pb-10 overflow-hidden">
-      {/* Subtle background pattern */}
+    <footer className="relative bg-primary text-white pt-20 pb-10 overflow-hidden">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(255,255,255,0.1)_1px,transparent_0)] bg-[size:40px_40px] opacity-30" />
-      
       <Container className="relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
           {/* Brand Section */}
@@ -82,7 +89,7 @@ const Footer = () => {
               {serviceLinks.map((service, index) => (
                 <li key={index}>
                   <a
-                    href="#services"
+                    href="#pricing"
                     className="text-gray-300 hover:text-white text-sm font-medium transition-all duration-300 flex items-center group"
                   >
                     <span className="w-2 h-2 bg-blue-400 rounded-full mr-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -115,27 +122,42 @@ const Footer = () => {
           <div>
             <h4 className="text-xl font-semibold mb-6 tracking-wide">Get in Touch</h4>
             <ul className="space-y-5">
-              <li className="flex items-center gap-3">
-                <Mail size={18} className="text-blue-400" />
+              <li className="flex items-start gap-3">
+                <Mail size={18} className="text-blue-400 mt-1" />
                 <a
-                  href="mailto:hello@teenytechtrek.com"
+                  href="mailto:anisha.singla@teenytechtrek.com"
                   className="text-gray-300 hover:text-white text-sm transition-colors duration-300"
                 >
-                  hello@teenytechtrek.com
+                  anisha.singla@teenytechtrek.com
                 </a>
               </li>
-              <li className="flex items-center gap-3">
-                <Phone size={18} className="text-blue-400" />
-                <a
-                  href="tel:+15551234567"
-                  className="text-gray-300 hover:text-white text-sm transition-colors duration-300"
-                >
-                  +1 (555) 123-4567
-                </a>
+
+              <li className="flex items-start gap-3">
+                <Phone size={18} className="text-blue-400 mt-1" />
+                <div className="flex flex-col space-y-1">
+                  <a
+                    href="tel:+16478645465"
+                    className="text-gray-300 hover:text-white text-sm transition-colors duration-300"
+                  >
+                    +1 (647) 864-5465
+                  </a>
+                  <a
+                    href="tel:+919855806696"
+                    className="text-gray-300 hover:text-white text-sm transition-colors duration-300"
+                  >
+                    +91 98558 06696
+                  </a>
+                </div>
               </li>
-              <li className="flex items-center gap-3">
-                <MapPin size={18} className="text-blue-400" />
-                <span className="text-gray-300 text-sm">San Francisco, CA</span>
+
+              <li className="flex items-start gap-3">
+                <MapPin size={18} className="text-blue-400 mt-1" />
+                <span className="text-gray-300 text-sm leading-relaxed">
+                  C-201, 2nd floor,<br />
+                  Sebiz Square Building, Plot no C-6,<br />
+                  Sector-67, Mohali, SAS Nagar - 160062,<br />
+                  Punjab, India
+                </span>
               </li>
             </ul>
           </div>
@@ -147,16 +169,10 @@ const Footer = () => {
             © {new Date().getFullYear()} Teeny Tech Trek. All rights reserved.
           </p>
           <div className="flex gap-8 text-xs text-gray-400">
-            <a
-              href="#"
-              className="hover:text-white transition-colors duration-300"
-            >
+            <a href="#" className="hover:text-white transition-colors duration-300">
               Privacy Policy
             </a>
-            <a
-              href="#"
-              className="hover:text-white transition-colors duration-300"
-            >
+            <a href="#" className="hover:text-white transition-colors duration-300">
               Terms of Service
             </a>
           </div>
@@ -173,4 +189,4 @@ const Footer = () => {
   );
 };
 
-export default Footer;  
+export default Footer;
