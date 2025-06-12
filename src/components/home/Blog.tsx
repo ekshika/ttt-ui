@@ -1,11 +1,70 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { getPublicBlogs } from "../../services/blogService"; // Adjust this path if needed
 import type { Blog } from "../../types/blog"; // Adjust this path if needed
 
 const PRIMARY = "#1f528c";
 const SECONDARY = "#3e6aa7";
 const FONT_FAMILY = "'Inter', 'Roboto', sans-serif";
+
+// Sample blog data for a tech company focused on AI and automation SaaS
+const sampleBlogs: Blog[] = [
+  {
+    id: "1",
+    slug: "ai-driven-automation-future",
+    title: "How AI-Driven Automation is Shaping the Future of SaaS",
+    content:
+      "Artificial intelligence is revolutionizing the SaaS industry by automating complex workflows, enhancing decision-making, and improving user experiences. In this article, we explore how AI-powered tools are transforming businesses and what to expect in 2026.",
+    media_cid: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
+    author_id: "Jane Doe",
+    published_at: "2025-06-01T10:00:00Z",
+    status: "published",
+    views_count: 1500,
+    created_at: "2025-05-30T08:00:00Z",
+    updated_at: "2025-06-01T09:00:00Z",
+  },
+  {
+    id: "2",
+    slug: "machine-learning-for-saas",
+    title: "Leveraging Machine Learning for Smarter SaaS Solutions",
+    content:
+      "Machine learning algorithms are enabling SaaS platforms to deliver personalized experiences and predictive analytics. Discover how ML is driving innovation in automation and customer success.",
+media_cid: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",    author_id: "John Smith",
+    published_at: "2025-05-20T09:30:00Z",
+    status: "published",
+    views_count: 1200,
+    created_at: "2025-05-18T07:00:00Z",
+    updated_at: "2025-05-20T08:00:00Z",
+  },
+  {
+    id: "3",
+    slug: "scaling-saas-with-automation",
+    title: "Scaling Your SaaS Business with Intelligent Automation",
+    content:
+      "Automation is key to scaling SaaS operations efficiently. Learn how to implement intelligent automation to streamline processes, reduce costs, and boost customer satisfaction.",
+    media_cid: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
+    author_id: "Emma Wilson",
+    published_at: "2025-04-15T14:20:00Z",
+    status: "published",
+    views_count: 980,
+    created_at: "2025-04-10T10:00:00Z",
+    updated_at: "2025-04-15T13:00:00Z",
+  },
+  {
+    id: "4",
+    slug: "ai-security-in-saas",
+    title: "Enhancing SaaS Security with AI-Powered Threat Detection",
+    content:
+      "As cyber threats evolve, AI is becoming a critical tool for securing SaaS platforms. This blog dives into how AI-driven threat detection can protect your business and customers.",
+    media_cid: "https://images.unsplash.com/photo-1563986768494-4dee2763ff3f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
+    author_id: "Michael Chen",
+    published_at: "2025-03-10T11:45:00Z",
+    status: "published",
+    views_count: 1100,
+    created_at: "2025-03-08T09:00:00Z",
+    updated_at: "2025-03-10T10:30:00Z",
+  },
+];
+
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -32,18 +91,15 @@ export default function BlogDisplayPage() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    async function fetchBlogs() {
-      try {
-        const data = await getPublicBlogs();
-        setBlogs(data);
-      } catch (err) {
-        console.error("Error fetching blogs:", err);
-        setError("Failed to load blogs.");
-      } finally {
-        setLoading(false);
-      }
+    // Simulate fetching blogs with sample data
+    try {
+      setBlogs(sampleBlogs);
+      setLoading(false);
+    } catch (err) {
+      console.error("Error setting blogs:", err);
+      setError("Failed to load blogs.");
+      setLoading(false);
     }
-    fetchBlogs();
   }, []);
 
   if (loading) {
@@ -113,9 +169,9 @@ export default function BlogDisplayPage() {
     >
       <div
         style={{
-          maxWidth: 1200, // Slightly wider for better content spread
+          maxWidth: 1200,
           margin: "0 auto",
-          padding: "0 24px", // Increased padding for better spacing
+          padding: "0 24px",
         }}
       >
         <motion.h2
@@ -126,11 +182,11 @@ export default function BlogDisplayPage() {
             color: PRIMARY,
             fontFamily: FONT_FAMILY,
             fontWeight: 800,
-            fontSize: 42, // Slightly larger for emphasis
+            fontSize: 42,
             marginBottom: 24,
             textAlign: "center",
             letterSpacing: "-1px",
-            padding: "80px 0 40px 0", // Increased top padding for balance
+            padding: "80px 0 40px 0",
           }}
         >
           Blog Articles
@@ -153,8 +209,8 @@ export default function BlogDisplayPage() {
           animate="visible"
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(340px, 1fr))", // Slightly wider cards
-            gap: 40, // Increased gap for better spacing
+            gridTemplateColumns: "repeat(auto-fit, minmax(340px, 1fr))",
+            gap: 40,
           }}
         >
           <AnimatePresence>
@@ -169,13 +225,13 @@ export default function BlogDisplayPage() {
                 style={{
                   textDecoration: "none",
                   color: "inherit",
-                  borderRadius: 20, // Softer corners
+                  borderRadius: 20,
                   boxShadow:
-                    "0 4px 16px rgba(62,106,167,0.1), 0 2px 8px rgba(31,82,140,0.08)", // Softer shadow
+                    "0 4px 16px rgba(62,106,167,0.1), 0 2px 8px rgba(31,82,140,0.08)",
                   background: "#fff",
                   display: "flex",
                   flexDirection: "column",
-                  minHeight: 360, // Slightly taller for balance
+                  minHeight: 360,
                   cursor: "pointer",
                   position: "relative",
                   overflow: "hidden",
@@ -189,7 +245,7 @@ export default function BlogDisplayPage() {
                     alt={blog.title}
                     style={{
                       width: "100%",
-                      height: 200, // Taller image for better visual impact
+                      height: 200,
                       objectFit: "cover",
                       borderTopLeftRadius: 20,
                       borderTopRightRadius: 20,
@@ -200,10 +256,10 @@ export default function BlogDisplayPage() {
                 <div
                   style={{
                     flex: 1,
-                    padding: 28, // Increased padding for spacious feel
+                    padding: 28,
                     display: "flex",
                     flexDirection: "column",
-                    gap: 12, // Consistent spacing
+                    gap: 12,
                   }}
                 >
                   <h3
@@ -211,7 +267,7 @@ export default function BlogDisplayPage() {
                       color: PRIMARY,
                       fontFamily: FONT_FAMILY,
                       fontWeight: 700,
-                      fontSize: 22, // Slightly larger for hierarchy
+                      fontSize: 22,
                       margin: 0,
                     }}
                   >
@@ -221,16 +277,15 @@ export default function BlogDisplayPage() {
                     style={{
                       color: "#555",
                       fontWeight: 400,
-                      fontSize: 16, // Slightly larger for readability
-                      lineHeight: "1.5", // Improved line height
+                      fontSize: 16,
+                      lineHeight: "1.5",
                       flex: 1,
                     }}
                   >
                     {blog.content?.slice(0, 120) ?? ""}
                     {blog.content && blog.content.length > 120 && "..."}
                   </div>
-                  {/* Uncomment if author and date are needed */}
-                  {/* <div
+                  <div
                     style={{
                       marginTop: "auto",
                       display: "flex",
@@ -251,7 +306,7 @@ export default function BlogDisplayPage() {
                           })
                         : ""}
                     </span>
-                  </div> */}
+                  </div>
                 </div>
                 <div
                   style={{
