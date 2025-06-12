@@ -30,6 +30,7 @@ const AppRoutes = () => (
       {/* Public routes */}
       <Route path="/" element={<HomePage />} />
       <Route path="/login" element={<AuthPage />} />
+      
 
       {/* ←── New public route for "single blog" */}
       <Route path="/blog/:slug" element={<BlogSingleView />} />
