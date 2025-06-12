@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Zap, Cpu } from 'lucide-react';
 import Container from '../ui/Container';
 
 const Hero = () => {
@@ -50,12 +50,15 @@ const Hero = () => {
           >
             <div className="relative z-10">
               <div className="bg-white p-6 rounded-2xl shadow-lg max-w-md mx-auto">
-                <div className="h-64 bg-gradient-to-br from-primary/10 to-primary-light/30 rounded-lg flex items-center justify-center mb-4">
+                <div className="h-64 bg-gradient-to-br from-primary/10 to-primary-light/30 rounded-lg flex items-center justify-center mb-4 relative overflow-hidden">
                   <img 
-                    src="/logo.svg" 
-                    alt="Teeny Tech Trek AI Visualization" 
-                    className="h-32 w-32 animate-float"
+                    src="https://images.pexels.com/photos/8386440/pexels-photo-8386440.jpeg?auto=compress&cs=tinysrgb&w=400"
+                    alt="AI Technology Visualization" 
+                    className="w-full h-full object-cover rounded-lg opacity-80"
                   />
+                  <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-primary-light/40 rounded-lg flex items-center justify-center">
+                    <Cpu className="h-16 w-16 text-primary animate-pulse" />
+                  </div>
                 </div>
                 <div className="space-y-3">
                   <div className="h-4 bg-gray-200 rounded-full w-3/4"></div>
@@ -70,7 +73,11 @@ const Hero = () => {
                 animate={{ x: 0, y: 0, opacity: 1 }}
                 transition={{ delay: 0.7, duration: 0.5 }}
               >
-                <div className="text-sm font-medium mb-2">AI-Powered Solutions</div>
+                <div className="flex items-center gap-2 mb-2">
+                  <Cpu className="h-4 w-4" />
+                  <div className="text-sm font-medium">AI-Powered Solutions</div>
+                </div>
+                <div className="h-0.5 bg-white/30 rounded-full mb-2"></div>
                 <div className="h-2 bg-white/30 rounded-full mb-1.5"></div>
                 <div className="h-2 bg-white/30 rounded-full w-2/3"></div>
               </motion.div>
@@ -81,7 +88,11 @@ const Hero = () => {
                 animate={{ x: 0, y: 0, opacity: 1 }}
                 transition={{ delay: 0.9, duration: 0.5 }}
               >
-                <div className="text-sm font-medium mb-2">Fast Implementation</div>
+                <div className="flex items-center gap-2 mb-2">
+                  <Zap className="h-4 w-4" />
+                  <div className="text-sm font-medium">Fast Implementation</div>
+                </div>
+                <div className="h-0.5 bg-white/30 rounded-full mb-2"></div>
                 <div className="h-2 bg-white/30 rounded-full mb-1.5"></div>
                 <div className="h-2 bg-white/30 rounded-full w-3/4"></div>
               </motion.div>
