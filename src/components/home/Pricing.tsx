@@ -8,13 +8,31 @@ import Container from "../ui/Container";
 import SectionHeading from "../ui/SectionHeading";
 import { getPublicPackagesByField } from "../../services/packageService";
 import { Package } from "../../types/package";
+import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import api from "../../api/axios";
+
+const loadRazorpay = () => {
+  return new Promise((resolve) => {
+    if (document.getElementById("razorpay-sdk")) return resolve(true);
+    const script = document.createElement("script");
+    script.id = "razorpay-sdk";
+    script.src = "https://checkout.razorpay.com/v1/checkout.js";
+    script.onload = () => resolve(true);
+    script.onerror = () => resolve(false);
+    document.body.appendChild(script);
+  });
+};
 
 const SubscriptionPricing: React.FC = () => {
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
   const [packages, setPackages] = useState<Package[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  const [paymentError, setPaymentError] = useState("");
+  const [paying, setPaying] = useState<string | null>(null);
+
+  const { user, accessToken } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -34,6 +52,60 @@ const SubscriptionPricing: React.FC = () => {
     fetchSubscriptions();
     return () => { isMounted = false; };
   }, []);
+
+  const handleBuy = async (pkg: Package) => {
+    setPaymentError("");
+    setPaying(pkg.id);
+
+    const sdkLoaded = await loadRazorpay();
+    if (!sdkLoaded) {
+      setPaymentError("Failed to load Razorpay SDK.");
+      setPaying(null);
+      return;
+    }
+
+    // Prepare amount in paise for Razorpay
+    const amountPaise = pkg.price * 100;
+
+    const options = {
+      key: import.meta.env.VITE_RAZORPAY_KEY_ID,
+      amount: amountPaise,
+      currency: "INR",
+      name: "Teeny Tech Trek",
+      description: pkg.description || pkg.name,
+      // image: '...', // Optional: logo
+      handler: async function (response: any) {
+        try {
+          // Send payment info to backend for verification & to create your order record
+          await api.post(
+            '/orders/verify', // <-- create this endpoint on your backend
+            {
+              razorpay_payment_id: response.razorpay_payment_id,
+              package_id: pkg.id,
+              amount: pkg.price,
+            },
+            { headers: { Authorization: `Bearer ${accessToken}` } }
+          );
+          alert("Payment successful! Access will be activated soon.");
+          navigate("/orders");
+        } catch (e: any) {
+          setPaymentError("Payment verification failed. Please contact support.");
+        }
+      },
+      prefill: {
+
+      },
+      notes: {
+        package_id: pkg.id,
+      },
+      theme: { color: "#1976d2" }
+    };
+
+    // @ts-ignore
+    const razorpay = new window.Razorpay(options);
+    razorpay.open();
+    setPaying(null);
+  };
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -73,6 +145,9 @@ const SubscriptionPricing: React.FC = () => {
     <section id="pricing" className="py-20 bg-gradient-to-b from-white to-primary-100/30">
       <Container>
         <SectionHeading title="Subscription Packages" subtitle="Choose the perfect plan to accelerate your AI journey" />
+        {paymentError && (
+          <div className="text-center text-red-500 mb-4">{paymentError}</div>
+        )}
         <motion.div
           ref={ref}
           initial="hidden"
@@ -104,18 +179,19 @@ const SubscriptionPricing: React.FC = () => {
                   <span className="text-lg font-semibold">{pkg.name}</span>
                 </div>
                 <div className="text-gray-500 mb-3">{pkg.description}</div>
-                <div className="text-3xl font-bold mb-1 text-blue-700">{priceText}<span className="text-lg text-gray-600 font-medium ml-1">/ {durationText}</span></div>
+                <div className="text-3xl font-bold mb-1 text-blue-700">{priceText}
+                  <span className="text-lg text-gray-600 font-medium ml-1">/ {durationText}</span>
+                </div>
                 <div className="flex-grow" />
-                <button
-                  className={`mt-4 px-6 py-2 rounded-lg font-semibold text-base transition
-                    ${popular
-                      ? 'bg-blue-700 text-white hover:bg-blue-800'
-                      : 'border border-blue-700 text-blue-700 bg-white hover:bg-blue-50'}
-                  `}
-                  onClick={() => navigate(`/packages/${pkg.slug}`)}
-                >
-                  Get Started
-                </button>
+                <div className="mt-4">
+                  <button
+                    onClick={() => handleBuy(pkg)}
+                    disabled={paying === pkg.id}
+                    className="bg-blue-700 text-white py-3 px-8 rounded-xl text-lg font-semibold shadow hover:bg-blue-800 transition disabled:opacity-70"
+                  >
+                    {paying === pkg.id ? 'Processing...' : `Buy for ₹${pkg.price}`}
+                  </button>
+                </div>
               </motion.div>
             );
           })}

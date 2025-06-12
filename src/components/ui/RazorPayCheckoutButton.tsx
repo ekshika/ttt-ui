@@ -33,9 +33,9 @@ const RazorpayCheckoutButton: React.FC<RazorpayCheckoutButtonProps> = ({
         { package_id: packageId, amount },
         { headers: { Authorization: `Bearer ${accessToken}` } }
       );
-      const { id: order_id, amount: razorAmount, currency } =  res.data;
+      const { id: order_id, amount: razorAmount, currency } = res.data;
 
-      // 2. Open Razorpay checkout
+      // 2. Open Razorpay checkout (default Razorpay modal)
       const options = {
         key: import.meta.env.VITE_RAZORPAY_KEY_ID,
         amount: razorAmount,
@@ -66,7 +66,8 @@ const RazorpayCheckoutButton: React.FC<RazorpayCheckoutButtonProps> = ({
         prefill: {
           user_id: user?.sub
         },
-        theme: { color: '#1976d2' },
+        theme: { color: '#1976d2' }
+        // You can add modal settings if you want, e.g., modal: { ondismiss: ... }
       };
       const razorpay = new (window as any).Razorpay(options);
       razorpay.open();
