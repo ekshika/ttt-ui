@@ -217,7 +217,7 @@ export default function BlogDisplayPage() {
             {blogs.map((blog) => (
               <motion.a
                 key={blog.id}
-                href={`/blog/${blog.slug || blog.id}`}
+                href={`#blog`}
                 variants={cardVariants}
                 initial="hidden"
                 animate="visible"
